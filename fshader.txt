@@ -1,0 +1,27 @@
+#version 430
+
+layout(location=2) uniform vec4 lightPos;
+
+
+in vec4 fcolor;
+in vec4 fpos;
+in vec4 fnorm;
+
+out vec4 gli_FragColor;
+
+void main() {
+	
+	float amb=0.5f;	
+	float diffuse=0.0f;
+	
+	vec4 L=normalize(lightPos-fpos);
+	float I=1.0f;
+	float K=1.0f;
+	
+	diffuse=I*K*max(dot(L,fnorm),0.0f);
+	
+	float specular=0.0f;
+	
+        gli_FragColor = fcolor*(amb+diffuse+specular);
+	
+}
