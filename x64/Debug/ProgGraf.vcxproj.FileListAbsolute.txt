@@ -1,1 +1,2 @@
 C:\Users\jaime\Desktop\ProgGraf\x64\Debug\ProgGraf.exe
+C:\Users\28dav\Desktop\Planetas_IV\x64\Debug\ProgGraf.exe

@@ -156,6 +156,7 @@
     <ClCompile Include="collider.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="icos.cpp" />
     <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mesh.cpp" />
