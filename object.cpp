@@ -6,7 +6,6 @@ int Object::idCounter=0;
 Object::Object()
 {
 
-
 	this->id=idCounter;
 	idCounter++;
 	this->mesh=new Mesh();
@@ -16,6 +15,16 @@ Object::Object()
 	this->mesh->setColor(1,glm::vec4(0.0f,1.0f,0.0f,1.0f));
 	this->mesh->setColor(2,glm::vec4(0.0f,0.0f,1.0f,1.0f));
 	this->collider=new Collider(this);
+
+}
+
+Object::Object(int vertex) {
+	this->id = idCounter;
+	this->mesh = new Mesh(1);
+	this->shader = mesh->shader;
+	this->modelMatrix = glm::mat4(1.0f);
+	this->collider = new Collider(this);
+
 
 }
 
@@ -61,8 +70,7 @@ void Object::step(){
 	this->position.x+=0.01f;
 	
 	if(this->position.x>1.0f)
-		this->position.x=-1.0f;
-		
+		this->position.x=-1.0f;		
 		*/
 
 }
