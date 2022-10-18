@@ -9,6 +9,8 @@ Mesh::Mesh(){
 	faceList=new std::vector<int>();
 //añadir vértices
 
+	//test
+
 	vertex_t v1,v2,v3;
 	
 	v1.posicion=glm::vec4(-0.5f,-0.5,0.0f,1.0f);
