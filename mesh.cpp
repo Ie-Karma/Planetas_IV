@@ -85,10 +85,14 @@ Mesh::Mesh(int vertex) {
 
 
 
+		//TODO cambiar a subdivide
+		//faceList->push_back(v1);
+		//faceList->push_back(v2);
+		//faceList->push_back(v3);
 
-		faceList->push_back(v1);
-		faceList->push_back(v2);
-		faceList->push_back(v3);
+		
+
+		subdivide(v[v1],v[v2], v[v3],v1, v2, v3, 5);
 
 		
 	}
@@ -106,15 +110,18 @@ void normalize(float v[3]) {
 	v[0] /= d; v[1] /= d; v[2] /= d;
 }
 
-void Mesh::subdivide(float* v1, float* v2, float* v3, long depth)
+void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int tin3, long depth)
 {
 	float v12[3], v23[3], v31[3];
 	int i;
 
+	int test = vertexList->size();
+		
+
 	if (depth == 0) {
-		faceList->push_back((int) v1[0]);
-		faceList->push_back((int) v2[0]);
-		faceList->push_back((int) v3[0]);
+		faceList->push_back(tin1);
+		faceList->push_back(tin2);
+		faceList->push_back(tin3);
 		return;
 	}
 
@@ -124,15 +131,67 @@ void Mesh::subdivide(float* v1, float* v2, float* v3, long depth)
 		v12[i] = (v1[i] + v2[i]) / 2.0;
 		v23[i] = (v2[i] + v3[i]) / 2.0;
 		v31[i] = (v3[i] + v1[i]) / 2.0;
+
 	}
 
+
+
 	normalize(v12);
+
+	
+	vertex_t vertex12;
+
+	vertex12.posicion.x = v12[0];
+	vertex12.posicion.y = v12[1];
+	vertex12.posicion.z = v12[2];
+	vertex12.posicion.w = 1;
+
+	vertex12.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex12.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex12.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex12.color.w = 1;
+
+	vertexList->push_back(vertex12);
+
 	normalize(v23);
+
+	vertex_t vertex23;
+
+	vertex23.posicion.x = v23[0];
+	vertex23.posicion.y = v23[1];
+	vertex23.posicion.z = v23[2];
+	vertex23.posicion.w = 1;
+
+	vertex23.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex23.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex23.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex23.color.w = 1;
+
+	vertexList->push_back(vertex23);
+
 	normalize(v31);
-	subdivide(v1, v12, v31, depth - 1);
-	subdivide(v2, v23, v12, depth - 1);
-	subdivide(v3, v31, v23, depth - 1);
-	subdivide(v12, v23, v31, depth - 1);
+
+	vertex_t vertex31;
+
+	vertex31.posicion.x = v31[0];
+	vertex31.posicion.y = v31[1];
+	vertex31.posicion.z = v31[2];
+	vertex31.posicion.w = 1;
+
+	vertex31.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex31.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex31.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex31.color.w = 1;
+
+	vertexList->push_back(vertex31);
+
+
+
+
+	subdivide(v1, v12, v31,tin1, test,test+2, depth - 1);
+	subdivide(v2, v23, v12, tin2, test + 1, test, depth - 1);
+	subdivide(v3, v31, v23, tin3, test + 2, test + 1, depth - 1);
+	subdivide(v12, v23, v31, test, test + 1, test + 2, depth - 1);
 }
 
 

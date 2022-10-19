@@ -17,7 +17,7 @@ public:
 	Mesh(std::string fileName);
 	Mesh(int vertex);
 	~Mesh();
-	void subdivide(float *v1, float *v2, float *v3, long depth);
+	void subdivide(float *v1, float *v2, float *v3,int tin1, int tin2, int tin3, long depth);
 	void loadFromFile(std::string fileName);
 	void setColor(int idxVertex, glm::vec4 color);
 };

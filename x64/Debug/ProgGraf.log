@@ -1,2 +1,8 @@
-﻿  main.cpp
-  ProgGraf.vcxproj -> C:\Users\28dav\Desktop\Planetas_IV\x64\Debug\ProgGraf.exe
+﻿  mesh.cpp
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(44,37): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(45,37): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(118,31): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(131,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(132,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(133,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+  ProgGraf.vcxproj -> C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\x64\Debug\ProgGraf.exe
