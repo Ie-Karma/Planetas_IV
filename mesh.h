@@ -14,6 +14,7 @@ public:
 	std::vector<int>* faceList;
 	GLShader* shader;
 	float v[12][4];
+	float radius;
 	//métodos	
 	Mesh();
 	Mesh(std::string fileName);
@@ -23,4 +24,7 @@ public:
 	void loadFromFile(std::string fileName);
 	void setColor(int idxVertex, glm::vec4 color);
 	std::vector<float> computeIcosahedronVertices();
+	void normalize(float v[3]);
 };
+
+

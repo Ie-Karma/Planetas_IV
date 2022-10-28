@@ -1,10 +1,10 @@
 ﻿  mesh.cpp
-C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(43,23): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(43,17): warning C4244: 'inicializando': conversión de 'double' a 'const float'; posible pérdida de datos
-C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(227,37): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
-C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(228,37): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
-C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(326,31): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(340,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(341,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(342,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-  ProgGraf.vcxproj -> C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\x64\Debug\ProgGraf.exe
+C:\Users\28dav\Desktop\Planetas_IV\mesh.cpp(43,23): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\28dav\Desktop\Planetas_IV\mesh.cpp(43,17): warning C4244: 'inicializando': conversión de 'double' a 'const float'; posible pérdida de datos
+C:\Users\28dav\Desktop\Planetas_IV\mesh.cpp(227,37): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\Users\28dav\Desktop\Planetas_IV\mesh.cpp(228,37): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\Users\28dav\Desktop\Planetas_IV\mesh.cpp(333,31): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\28dav\Desktop\Planetas_IV\mesh.cpp(347,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\28dav\Desktop\Planetas_IV\mesh.cpp(348,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\28dav\Desktop\Planetas_IV\mesh.cpp(349,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+  ProgGraf.vcxproj -> C:\Users\28dav\Desktop\Planetas_IV\x64\Debug\ProgGraf.exe

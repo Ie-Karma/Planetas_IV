@@ -5,23 +5,23 @@
 #include <assert.h>
 
 
-Mesh::Mesh(){
+Mesh::Mesh() {
 
-	vertexList=new std::vector<vertex_t>();
-	faceList=new std::vector<int>();
+	vertexList = new std::vector<vertex_t>();
+	faceList = new std::vector<int>();
 
-//añadir vértices
+	//añadir vértices
 
-	vertex_t v1,v2,v3;
-	
-	v1.posicion=glm::vec4(-0.5f,-0.5,0.0f,1.0f);
-	v2.posicion=glm::vec4( 0.0f, 0.5,0.0f,1.0f);
-	v3.posicion=glm::vec4( 0.5f,-0.5,0.0f,1.0f);
-	
+	vertex_t v1, v2, v3;
+
+	v1.posicion = glm::vec4(-0.5f, -0.5, 0.0f, 1.0f);
+	v2.posicion = glm::vec4(0.0f, 0.5, 0.0f, 1.0f);
+	v3.posicion = glm::vec4(0.5f, -0.5, 0.0f, 1.0f);
+
 	vertexList->push_back(v1);
 	vertexList->push_back(v2);
 	vertexList->push_back(v3);
-	
+
 	faceList->push_back(0);
 	faceList->push_back(1);
 	faceList->push_back(2);
@@ -29,17 +29,17 @@ Mesh::Mesh(){
 
 //CAMBIAR SISTEMA DE PUNTOS
 
-Mesh::Mesh(std::string fileName){
+Mesh::Mesh(std::string fileName) {
 
-	vertexList=new std::vector<vertex_t>();
-	faceList=new std::vector<int>();
-//añadir vértices
+	vertexList = new std::vector<vertex_t>();
+	faceList = new std::vector<int>();
+	//añadir vértices
 	loadFromFile(fileName);
 }
 
 std::vector<float> Mesh::computeIcosahedronVertices()
 {
-	float radius = 1;
+	radius = 0.5;
 	const float PI = acos(-1);
 	const float H_ANGLE = PI / 180 * 72;    // 72 degree = 360 / 5
 	const float V_ANGLE = atanf(1.0f / 2);  // elevation = 26.565 degree
@@ -74,12 +74,12 @@ std::vector<float> Mesh::computeIcosahedronVertices()
 
 	vertexList->push_back(topVertex);
 
-	
+
 
 	// 10 vertices at 2nd and 3rd rows
 	for (int i = 1; i <= 5; ++i)
 	{
-		vertex_t v1,v2;
+		vertex_t v1, v2;
 
 		i1 = i * 3;         // for 2nd row
 		i2 = (i + 5) * 3;   // for 3rd row
@@ -218,7 +218,7 @@ std::vector<float> Mesh::computeIcosahedronVertices()
 }
 
 Mesh::Mesh(int vertex) {
-	
+
 	vertexList = new std::vector<vertex_t>();
 	faceList = new std::vector<int>();
 
@@ -297,12 +297,12 @@ Mesh::Mesh(int vertex) {
 		//faceList->push_back(v1);
 		//faceList->push_back(v2);
 		//faceList->push_back(v3);
-			
 
-		subdivide(v[v1],v[v2], v[v3],v1, v2, v3, 3);
+
+		subdivide(v[v1], v[v2], v[v3], v1, v2, v3, 4);
 
 		//std::cout << v[v1] << std::endl;
-		
+
 	}
 
 	std::string vshader = "vshader.txt";
@@ -312,20 +312,27 @@ Mesh::Mesh(int vertex) {
 
 }
 
-void normalize(float v[3]) {
-	float d = sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+void Mesh::normalize(float v[3]) {
+	float d = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 	assert(d > 0);
 	v[0] /= d; v[1] /= d; v[2] /= d;
+
+	for (int i = 0; i < 3; i++)
+	{
+		v[i] *= radius;
+
+		v[i] += (static_cast <float> (rand()) / static_cast <float> (RAND_MAX))/20;
+	}
 }
 
 void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int tin3, long depth)
 {
 	float v12[3], v23[3], v31[3];
-	
+
 
 	int test = vertexList->size();
 
-	
+
 
 	if (depth == 0) {
 		faceList->push_back(tin1);
@@ -341,15 +348,15 @@ void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int ti
 		v23[i] = (v2[i] + v3[i]) / 2.0;
 		v31[i] = (v3[i] + v1[i]) / 2.0;
 
-		
+
 
 	}
 
 
 
 
-	//normalize(v12);
-	
+	normalize(v12);
+
 	vertex_t vertex12;
 
 	vertex12.posicion.x = v12[0];
@@ -366,7 +373,7 @@ void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int ti
 
 
 
-	//normalize(v23);
+	normalize(v23);
 
 	vertex_t vertex23;
 
@@ -382,7 +389,7 @@ void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int ti
 
 	vertexList->push_back(vertex23);
 
-	//normalize(v31);
+	normalize(v31);
 
 	vertex_t vertex31;
 
@@ -401,7 +408,7 @@ void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int ti
 
 
 
-	subdivide(v1, v12, v31,tin1, test,test+2, depth - 1);
+	subdivide(v1, v12, v31, tin1, test, test + 2, depth - 1);
 	subdivide(v2, v23, v12, tin2, test + 1, test, depth - 1);
 	subdivide(v3, v31, v23, tin3, test + 2, test + 1, depth - 1);
 	subdivide(v12, v23, v31, test, test + 1, test + 2, depth - 1);
@@ -410,66 +417,65 @@ void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int ti
 
 
 
-void Mesh::setColor(int idxVertex, glm::vec4 color){
-	(*vertexList)[idxVertex].color=color;
+void Mesh::setColor(int idxVertex, glm::vec4 color) {
+	(*vertexList)[idxVertex].color = color;
 }
 
 
-void Mesh::loadFromFile(std::string fileName){
+void Mesh::loadFromFile(std::string fileName) {
 
 	std::ifstream fin;
 	fin.open(fileName);
-	
-	int numVertex=0;
-	fin>>numVertex;
-	for(int i=0;i<numVertex;i++)
+
+	int numVertex = 0;
+	fin >> numVertex;
+	for (int i = 0; i < numVertex; i++)
 	{
 		vertex_t v1;
-		fin>>v1.posicion.x;
-		fin>>v1.posicion.y;
-		fin>>v1.posicion.z;
-		fin>>v1.posicion.w;
+		fin >> v1.posicion.x;
+		fin >> v1.posicion.y;
+		fin >> v1.posicion.z;
+		fin >> v1.posicion.w;
 
-		fin>>v1.color.r;
-		fin>>v1.color.g;
-		fin>>v1.color.b;
-		fin>>v1.color.a;
-		
-		fin>>v1.normal.x;
-		fin>>v1.normal.y;
-		fin>>v1.normal.z;
-		fin>>v1.normal.w;
-		vertexList->push_back(v1);	
+		fin >> v1.color.r;
+		fin >> v1.color.g;
+		fin >> v1.color.b;
+		fin >> v1.color.a;
+
+		fin >> v1.normal.x;
+		fin >> v1.normal.y;
+		fin >> v1.normal.z;
+		fin >> v1.normal.w;
+		vertexList->push_back(v1);
 	}
-	int numFaces=0;
-	fin>>numFaces;
-	for(int i=0;i<numFaces;i++)
+	int numFaces = 0;
+	fin >> numFaces;
+	for (int i = 0; i < numFaces; i++)
 	{
-		int v1,v2,v3;
-		fin>>v1;
-		fin>>v2;
-		fin>>v3;
-		faceList->push_back(v1);			
+		int v1, v2, v3;
+		fin >> v1;
+		fin >> v2;
+		fin >> v3;
+		faceList->push_back(v1);
 		faceList->push_back(v2);
-		faceList->push_back(v3);	
+		faceList->push_back(v3);
 	}
-	
+
 	std::string vshader;
-	fin>>vshader;
+	fin >> vshader;
 	std::string fshader;
-	fin>>fshader;
+	fin >> fshader;
 	fin.close();
-	
-	shader=new GLShader(vshader,fshader);
+
+	shader = new GLShader(vshader, fshader);
 }
 
 
 
-Mesh::~Mesh(){
-	
+Mesh::~Mesh() {
+
 	delete vertexList;
 	delete faceList;
 }
 
 
-	
