@@ -5,6 +5,7 @@
 #include <assert.h>
 
 
+
 Mesh::Mesh() {
 
 	vertexList = new std::vector<vertex_t>();
@@ -27,8 +28,6 @@ Mesh::Mesh() {
 	faceList->push_back(2);
 }
 
-//CAMBIAR SISTEMA DE PUNTOS
-
 Mesh::Mesh(std::string fileName) {
 
 	vertexList = new std::vector<vertex_t>();
@@ -37,9 +36,9 @@ Mesh::Mesh(std::string fileName) {
 	loadFromFile(fileName);
 }
 
-std::vector<float> Mesh::computeIcosahedronVertices()
+std::vector<float> Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro de forma matematica desplazando por angulos
 {
-	radius = 0.5;
+	radius = 1.5;
 	const float PI = acos(-1);
 	const float H_ANGLE = PI / 180 * 72;    // 72 degree = 360 / 5
 	const float V_ANGLE = atanf(1.0f / 2);  // elevation = 26.565 degree
@@ -62,10 +61,8 @@ std::vector<float> Mesh::computeIcosahedronVertices()
 	topVertex.posicion.z = radius;
 	topVertex.posicion.w = 1;
 
-	topVertex.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	topVertex.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	topVertex.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	topVertex.color.w = 1;
+	giveColor(topVertex);
+
 
 	v[0][0] = 0;
 	v[0][1] = 0;
@@ -109,20 +106,14 @@ std::vector<float> Mesh::computeIcosahedronVertices()
 		v1.posicion.z = z;                   // z
 		v1.posicion.w = 1;
 
-		v1.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v1.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v1.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v1.color.w = 1;
+		giveColor(v1);
 
 		v2.posicion.x = xy * cosf(hAngle2);
 		v2.posicion.y = xy * sinf(hAngle2);
 		v2.posicion.z = -z;
 		v2.posicion.w = 1;
 
-		v2.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v2.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v2.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v2.color.w = 1;
+		giveColor(v2);
 
 		vertexList->push_back(v1);
 
@@ -165,20 +156,14 @@ std::vector<float> Mesh::computeIcosahedronVertices()
 		v1.posicion.z = z;                   // z
 		v1.posicion.w = 1;
 
-		v1.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v1.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v1.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v1.color.w = 1;
+		giveColor(v1);
 
 		v2.posicion.x = xy * cosf(hAngle2);
 		v2.posicion.y = xy * sinf(hAngle2);
 		v2.posicion.z = -z;
 		v2.posicion.w = 1;
 
-		v2.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v2.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v2.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		v2.color.w = 1;
+		giveColor(v2);
 
 
 		vertexList->push_back(v2);
@@ -202,10 +187,7 @@ std::vector<float> Mesh::computeIcosahedronVertices()
 	botVertex.posicion.z = -radius;
 	botVertex.posicion.w = 1;
 
-	botVertex.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	botVertex.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	botVertex.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	botVertex.color.w = 1;
+	giveColor(botVertex);
 
 	v[11][0] = 0;
 	v[11][1] = 0;
@@ -299,11 +281,13 @@ Mesh::Mesh(int vertex) {
 		//faceList->push_back(v3);
 
 
-		subdivide(v[v1], v[v2], v[v3], v1, v2, v3, 4);
+		recursiveSubdivide2(v[v1], v[v2], v[v3], v1, v2, v3, 4);
 
-		//std::cout << v[v1] << std::endl;
+		
 
 	}
+
+	std::cout << sharedVertices.size() << std::endl;
 
 	std::string vshader = "vshader.txt";
 	std::string fshader = "fshader.txt";
@@ -321,11 +305,11 @@ void Mesh::normalize(float v[3]) {
 	{
 		v[i] *= radius;
 
-		v[i] += (static_cast <float> (rand()) / static_cast <float> (RAND_MAX))/20;
+		//v[i] += (static_cast <float> (rand()) / static_cast <float> (RAND_MAX))/20;
 	}
 }
 
-void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int tin3, long depth)
+void Mesh::recursiveSubdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int tin3, long depth)
 {
 	float v12[3], v23[3], v31[3];
 
@@ -348,11 +332,7 @@ void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int ti
 		v23[i] = (v2[i] + v3[i]) / 2.0;
 		v31[i] = (v3[i] + v1[i]) / 2.0;
 
-
-
 	}
-
-
 
 
 	normalize(v12);
@@ -364,10 +344,7 @@ void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int ti
 	vertex12.posicion.z = v12[2];
 	vertex12.posicion.w = 1;
 
-	vertex12.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex12.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex12.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex12.color.w = 1;
+	giveColor(vertex12);
 
 	vertexList->push_back(vertex12);
 
@@ -382,10 +359,7 @@ void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int ti
 	vertex23.posicion.z = v23[2];
 	vertex23.posicion.w = 1;
 
-	vertex23.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex23.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex23.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex23.color.w = 1;
+	giveColor(vertex23);
 
 	vertexList->push_back(vertex23);
 
@@ -398,29 +372,142 @@ void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int ti
 	vertex31.posicion.z = v31[2];
 	vertex31.posicion.w = 1;
 
-	vertex31.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex31.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex31.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex31.color.w = 1;
+	giveColor(vertex31);
 
 	vertexList->push_back(vertex31);
 
 
 
 
-	subdivide(v1, v12, v31, tin1, test, test + 2, depth - 1);
-	subdivide(v2, v23, v12, tin2, test + 1, test, depth - 1);
-	subdivide(v3, v31, v23, tin3, test + 2, test + 1, depth - 1);
-	subdivide(v12, v23, v31, test, test + 1, test + 2, depth - 1);
+	recursiveSubdivide(v1, v12, v31, tin1, test, test + 2, depth - 1);
+	recursiveSubdivide(v2, v23, v12, tin2, test + 1, test, depth - 1);
+	recursiveSubdivide(v3, v31, v23, tin3, test + 2, test + 1, depth - 1);
+	recursiveSubdivide(v12, v23, v31, test, test + 1, test + 2, depth - 1);
 }
 
+void Mesh::recursiveSubdivide2(float* v1, float* v2, float* v3, int tin1, int tin2, int tin3, long depth) {
+
+	float v12[3], v23[3], v31[3];
+
+	if (depth == 0) {
+		faceList->push_back(tin1);
+		faceList->push_back(tin2);
+		faceList->push_back(tin3);
+		return;
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		v12[i] = (v1[i] + v2[i]) / 2.0;
+		v23[i] = (v2[i] + v3[i]) / 2.0;
+		v31[i] = (v3[i] + v1[i]) / 2.0;
+
+	}
+
+	normalize(v12);
+
+	vertex_t vertex12;
+
+	vertex12.posicion.x = v12[0];
+	vertex12.posicion.y = v12[1];
+	vertex12.posicion.z = v12[2];
+	vertex12.posicion.w = 1;
+
+	giveColor(vertex12);
+
+	checkSharedVertex(vertex12);
+
+	normalize(v23);
+
+	vertex_t vertex23;
+
+	vertex23.posicion.x = v23[0];
+	vertex23.posicion.y = v23[1];
+	vertex23.posicion.z = v23[2];
+	vertex23.posicion.w = 1;
+
+	giveColor(vertex23);
+
+	checkSharedVertex(vertex23);
+
+	normalize(v31);
+
+	vertex_t vertex31;
+
+	vertex31.posicion.x = v31[0];
+	vertex31.posicion.y = v31[1];
+	vertex31.posicion.z = v31[2];
+	vertex31.posicion.w = 1;
+
+	giveColor(vertex31);
+
+	checkSharedVertex(vertex31);
 
 
+
+	recursiveSubdivide2(v1, v12, v31, tin1, vertex12.positionInList, vertex31.positionInList, depth - 1);
+	recursiveSubdivide2(v2, v23, v12, tin2, vertex23.positionInList, vertex12.positionInList, depth - 1);
+	recursiveSubdivide2(v3, v31, v23, tin3, vertex31.positionInList, vertex23.positionInList, depth - 1);
+	recursiveSubdivide2(v12, v23, v31, vertex12.positionInList, vertex23.positionInList, vertex31.positionInList, depth - 1);
+
+
+
+
+}
+
+void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int tin3, long depth) {
+
+	int newTrianglesPerSide = pow(2, depth);
+	int newVerticesPerSide = newTrianglesPerSide-1;
+	int totalNewVertices = newVerticesPerSide * 3;
+
+	float** tempVertex = new float*[totalNewVertices]; //Array de vertices a crear con un tamaño variable dependiendo del numero de subdivision
+	for (int i = 0; i < totalNewVertices; i++)
+	{
+		tempVertex[i] = new float[3];
+	}
+
+
+
+	float v12TempTest[3] = { (v2[0] - v1[0])/newTrianglesPerSide,(v2[1] - v1[1])/newTrianglesPerSide,(v2[2] - v1[2])/newTrianglesPerSide }; //dimension del vector de uno de los triangulos
+	float v23TempTest[3] = { (v3[0] - v2[0]) / newTrianglesPerSide,(v3[1] - v2[1]) / newTrianglesPerSide,(v3[2] - v2[2]) / newTrianglesPerSide }; //dimension del vector de uno de los triangulos
+	float v31TempTest[3] = { (v1[0] - v3[0]) / newTrianglesPerSide,(v1[1] - v3[1]) / newTrianglesPerSide,(v1[2] - v3[2]) / newTrianglesPerSide }; //dimension del vector de uno de los triangulos
+
+
+	for (int i = 0; i < totalNewVertices; i++) //crea los nuevos vertices en orden 
+	{
+		if (i < newVerticesPerSide)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				tempVertex[i][j] = v1[j] + 1 + i * v12TempTest[j];
+			}
+		}
+		else if (i >= 2*newVerticesPerSide)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				tempVertex[i][j] = v1[j] + 1 + i * v23TempTest[j];
+			}
+
+		}else
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				tempVertex[i][j] = v1[j] + 1 + i * v31TempTest[j];
+			}
+
+		}		
+		
+	}
+
+	  
+
+}
 
 void Mesh::setColor(int idxVertex, glm::vec4 color) {
 	(*vertexList)[idxVertex].color = color;
 }
-
 
 void Mesh::loadFromFile(std::string fileName) {
 
@@ -470,7 +557,47 @@ void Mesh::loadFromFile(std::string fileName) {
 	shader = new GLShader(vshader, fshader);
 }
 
+void Mesh::giveColor(vertex_t &vertex) {
+	vertex.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	vertex.color.w = 1;
+}
 
+void Mesh::checkSharedVertex(vertex_t &vertexToCheck) {
+
+	std::string test1 = std::to_string(vertexToCheck.posicion.x);
+	std::string test2 = std::to_string(vertexToCheck.posicion.y);
+	std::string test3 = std::to_string(vertexToCheck.posicion.z);
+
+	std::string newKey = test1 + test2 + test3;
+
+	if (sharedVertices.find(newKey) != sharedVertices.end()) {
+
+		vertexToCheck.positionInList = sharedVertices[newKey].positionInList;
+	}
+	else
+	{
+		
+		vertexToCheck.positionInList = vertexList->size();
+
+		sharedVertices.insert({ newKey, vertexToCheck });
+
+		normalize(vertexToCheck);
+
+		vertexList->push_back(vertexToCheck);
+
+	}
+
+}
+
+void Mesh::normalize(vertex_t& vertex) {
+
+	
+	vertex.posicion.x += (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) / 10;
+	vertex.posicion.y += (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) / 10;
+	vertex.posicion.z += (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) / 10;
+}
 
 Mesh::~Mesh() {
 
