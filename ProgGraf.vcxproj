@@ -156,6 +156,8 @@
     <ClCompile Include="collider.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="icos.cpp" />
+    <ClCompile Include="icosahedron.cpp" />
     <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mesh.cpp" />
@@ -174,6 +176,7 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="icosahedron.h" />
     <ClInclude Include="inputManager.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="object.h" />
@@ -188,6 +191,7 @@
   <ItemGroup>
     <None Include="bullet.trg" />
     <None Include="cube.trg" />
+    <None Include="ico.trg" />
     <None Include="Makefile" />
     <None Include="progGrafica" />
     <None Include="triangle.trg" />
