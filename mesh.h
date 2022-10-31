@@ -32,7 +32,7 @@ public:
 	void setColor(int idxVertex, glm::vec4 color);
 	void computeIcosahedronVertices();
 	void normalize(float v[3]);
-	void normalize(vertex_t &vertex);
+	void planetShape();
 
 	~Mesh();
 };

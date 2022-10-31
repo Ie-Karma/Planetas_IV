@@ -58,7 +58,7 @@ int main(int argc, char** argv)
 	System::scene = scene;
 	scene->setCamera(new Camera(glm::vec3(0, 0, 0.25), glm::vec3(0, 0, 0), perspective));
 
-	Object* icosahedron = new Icosahedron(0);
+	Object* icosahedron = new Icosahedron(3);
 	icosahedron->position.z -= 2;
 	render->setupObject(icosahedron);
 	scene->addObject(icosahedron);

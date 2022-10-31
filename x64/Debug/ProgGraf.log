@@ -1,3 +1,15 @@
-﻿  render.cpp
-C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\render.cpp(90,79): warning C4267: 'argumento': conversión de 'size_t' a 'GLsizei'; posible pérdida de datos
+﻿  mesh.cpp
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(42,23): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(42,17): warning C4244: 'inicializando': conversión de 'double' a 'const float'; posible pérdida de datos
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(47,10): warning C4101: 'i2': variable local sin referencia
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(47,6): warning C4101: 'i1': variable local sin referencia
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(62,16): warning C4101: 'v2': variable local sin referencia
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(62,12): warning C4101: 'v1': variable local sin referencia
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(192,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(193,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(194,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(244,26): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(364,52): warning C4267: '=': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(379,17): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(382,20): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
   ProgGraf.vcxproj -> C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\x64\Debug\ProgGraf.exe

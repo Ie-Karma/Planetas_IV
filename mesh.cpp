@@ -38,7 +38,7 @@ Mesh::Mesh(std::string fileName) {
 
 void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro de forma matematica desplazando por angulos
 {
-	radius = 1;
+	radius = 2;
 	const float PI = acos(-1);
 	const float H_ANGLE = PI / 180 * 72;    // 72 degree = 360 / 5
 	const float V_ANGLE = atanf(1.0f / 2);  // elevation = 26.565 degree
@@ -95,7 +95,20 @@ void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro 
 		v1.posicion.z = v[i][2];
 		v1.posicion.w = 1;
 
-		giveColor(v1);
+		//giveColor(v1);
+
+		v1.color.x = 1;
+		v1.color.y = 0;
+		v1.color.z = 0;
+		v1.color.w = 1;
+
+		std::string test1 = std::to_string(v1.posicion.x);
+		std::string test2 = std::to_string(v1.posicion.y);
+		std::string test3 = std::to_string(v1.posicion.z);
+
+		std::string newKey = test1 + test2 + test3;
+
+		sharedVertices.insert({ newKey, v1 });
 
 		vertexList->push_back(v1);
 	}
@@ -131,7 +144,7 @@ Mesh::Mesh(int vertex) {
 		tindices[i + 14][2] = 6 + (i % 5);
 	}
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		int v1, v2, v3;
 
@@ -143,7 +156,7 @@ Mesh::Mesh(int vertex) {
 		recursiveSubdivide(v[v1], v[v2], v[v3], v1, v2, v3, vertex);
 	}
 
-	std::cout << sharedVertices.size() << std::endl;
+	planetShape();
 
 	std::string vshader = "vshader.txt";
 	std::string fshader = "fshader.txt";
@@ -191,7 +204,6 @@ void Mesh::recursiveSubdivide(float* v1, float* v2, float* v3, int tin1, int tin
 	vertex12.posicion.z = v12[2];
 	vertex12.posicion.w = 1;
 
-	giveColor(vertex12);
 
 	checkSharedVertex(vertex12);
 
@@ -204,7 +216,6 @@ void Mesh::recursiveSubdivide(float* v1, float* v2, float* v3, int tin1, int tin
 	vertex23.posicion.z = v23[2];
 	vertex23.posicion.w = 1;
 
-	giveColor(vertex23);
 
 	checkSharedVertex(vertex23);
 
@@ -217,7 +228,6 @@ void Mesh::recursiveSubdivide(float* v1, float* v2, float* v3, int tin1, int tin
 	vertex31.posicion.z = v31[2];
 	vertex31.posicion.w = 1;
 
-	giveColor(vertex31);
 
 	checkSharedVertex(vertex31);
 
@@ -346,6 +356,7 @@ void Mesh::checkSharedVertex(vertex_t& vertexToCheck) {
 	if (sharedVertices.find(newKey) != sharedVertices.end()) {
 
 		vertexToCheck.positionInList = sharedVertices[newKey].positionInList;
+		
 	}
 	else
 	{
@@ -354,20 +365,52 @@ void Mesh::checkSharedVertex(vertex_t& vertexToCheck) {
 
 		sharedVertices.insert({ newKey, vertexToCheck });
 
-		normalize(vertexToCheck);
-
 		vertexList->push_back(vertexToCheck);
 
 	}
 
 }
 
-void Mesh::normalize(vertex_t& vertex) {
+void Mesh::planetShape() {	
+
+	for (int i = 0; i < vertexList->size(); i++)
+	{
+		float HI = 1.5;
+		float LO = 0.8;
+		float randomHeight = LO + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI - LO)));
+
+		float randomTest = rand() % 4;
+
+		if (randomTest==3)
+		{
+			(*vertexList)[i].posicion.x *= randomHeight;
+			(*vertexList)[i].posicion.y *= randomHeight;
+			(*vertexList)[i].posicion.z *= randomHeight;
+		}
 
 
-	vertex.posicion.x += (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) / 10;
-	vertex.posicion.y += (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) / 10;
-	vertex.posicion.z += (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) / 10;
+
+		float length = sqrt((*vertexList)[i].posicion.x * (*vertexList)[i].posicion.x
+			+ (*vertexList)[i].posicion.y * (*vertexList)[i].posicion.y
+			+ (*vertexList)[i].posicion.z * (*vertexList)[i].posicion.z);
+
+
+		if (length >= radius-0.001 && length <= radius+0.01)
+		{
+			setColor(i, glm::vec4(0,0,1,0));
+		}
+		else if(length < radius)
+		{
+			setColor(i, glm::vec4(1, 0, 0, 0));
+		}
+		else if (length > radius)
+		{
+			setColor(i, glm::vec4(0, 1, 0, 0));
+		}
+
+
+		
+	}
 }
 
 Mesh::~Mesh() {
