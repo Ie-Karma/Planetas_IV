@@ -38,7 +38,8 @@ int main(int argc, char** argv)
 	if (!glfwState)
 		std::cout << "ERROR iniciando glfw\n";
 
-	GLFWwindow* window = glfwCreateWindow(1080, 810, "Prueba 1 GLFW", nullptr, nullptr); 
+
+	GLFWwindow* window = glfwCreateWindow(1080, 810, "Prueba 1 GLFW", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
@@ -49,37 +50,16 @@ int main(int argc, char** argv)
 		std::cout << "ERROR iniciando glew\n";
 
 	InputManager::init(window);
-	/*	Object* triangle=new SpaceShip("triangle.trg");
-		triangle->scale=glm::vec3(0.1f,0.1f,0.1f);
-		triangle->position.y=-0.45f;
 
 
-		Object* enemy=new Enemy("triangle.trg");
-		enemy->scale=glm::vec3(0.1f,0.1f,0.1f);
-		enemy->position.y=0.45f;
-		enemy->rotation.z=glm::radians(180.0f);
-		*/
+
 	Render* render = new Render();
 	Scene* scene = new Scene();
 	System::scene = scene;
 	scene->setCamera(new Camera(glm::vec3(0, 0, 0.25), glm::vec3(0, 0, 0), perspective));
-	//scene->addObject(triangle);
-	//scene->addObject(enemy);
 
-	//render->setupObject(enemy);
-	//render->setupObject(triangle);
-
-	//Object* cube = new Cube("cube.trg");
-	//cube->scale=glm::vec3(0.5f,0.5f,0.5f);
-	//cube->position.z = -3.0f;
-
-	//render->setupObject(cube);
-	//scene->addObject(cube);
-
-	Object* icosahedron = new Icosahedron();
-
-	icosahedron->position.z = -2.0f;
-
+	Object* icosahedron = new Icosahedron(0);
+	icosahedron->position.z -= 2;
 	render->setupObject(icosahedron);
 	scene->addObject(icosahedron);
 
@@ -95,7 +75,8 @@ int main(int argc, char** argv)
 		}
 	}
 
-	//delete triangle;
+	delete icosahedron;
+
 	return 0;
 
 }
