@@ -38,7 +38,7 @@ Mesh::Mesh(std::string fileName) {
 
 void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro de forma matematica desplazando por angulos
 {
-	radius = 2;
+	radius = 1;
 	const float PI = acos(-1);
 	const float H_ANGLE = PI / 180 * 72;    // 72 degree = 360 / 5
 	const float V_ANGLE = atanf(1.0f / 2);  // elevation = 26.565 degree
@@ -117,6 +117,8 @@ void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro 
 }
 
 Mesh::Mesh(int vertex) {
+
+	srand(static_cast <unsigned> (time(0)));
 
 	vertexList = new std::vector<vertex_t>();
 	faceList = new std::vector<int>();
@@ -375,37 +377,35 @@ void Mesh::planetShape() {
 
 	for (int i = 0; i < vertexList->size(); i++)
 	{
-		float HI = 1.5;
-		float LO = 0.8;
+		float HI = 1.1;
+		float LO = 0.95;
 		float randomHeight = LO + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI - LO)));
 
-		float randomTest = rand() % 4;
+		float randomTest = rand() % 3;
 
-		if (randomTest==3)
+		if (randomTest==2)
 		{
 			(*vertexList)[i].posicion.x *= randomHeight;
 			(*vertexList)[i].posicion.y *= randomHeight;
 			(*vertexList)[i].posicion.z *= randomHeight;
 		}
 
-
-
 		float length = sqrt((*vertexList)[i].posicion.x * (*vertexList)[i].posicion.x
 			+ (*vertexList)[i].posicion.y * (*vertexList)[i].posicion.y
 			+ (*vertexList)[i].posicion.z * (*vertexList)[i].posicion.z);
 
 
-		if (length >= radius-0.001 && length <= radius+0.01)
+		if (length >= radius-0.02 && length <= radius+0.02)
 		{
-			setColor(i, glm::vec4(0,0,1,0));
+			setColor(i, glm::vec4(0,0.5,0,0));
 		}
 		else if(length < radius)
 		{
-			setColor(i, glm::vec4(1, 0, 0, 0));
+			setColor(i, glm::vec4(0, 0, 1, 0));
 		}
 		else if (length > radius)
 		{
-			setColor(i, glm::vec4(0, 1, 0, 0));
+			setColor(i, glm::vec4(0.61, 0.61, 0.61, 0));
 		}
 
 
