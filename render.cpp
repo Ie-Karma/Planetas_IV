@@ -174,6 +174,7 @@ void Render::drawScene(Scene* scene) {
     for (auto it = objList->begin();
         it != objList->end();
         it++) {
-        drawObjectGL4(it->second, scene->getCamera()->getPosition());
+        drawObjectGL4(it->second, scene->getCamera()->getPosition(),scene->cam);
+        //drawObjectGL4(it->second, scene->getCamera()->getPosition());
     }
 }
