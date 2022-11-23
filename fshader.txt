@@ -10,9 +10,9 @@ in vec4 fcolor;
 in vec4 fpos;
 in vec4 fnorm;
 
-//in int fTextType;
+in int fTextType;
 
-//in vec3 cubeCoords;
+in vec3 cubeCoords;
 
 out vec4 gli_FragColor;
 
@@ -30,5 +30,16 @@ void main() {
 	float specular=0.0f;
 	
         gli_FragColor = fcolor*(amb+diffuse+specular);
+
+	vec4 textColor= vec4(1.0f,0.0f,0.0f,1.0f);
+
+  if(fTextType==1){
+   textColor = texture2D(texture,tempCoord);
+
+  }else if(fTextType==2) {
+   textColor =  texture(skybox, texCoords);
+  }
+
+   gli_FragColor = textColor;
 	
 }
