@@ -58,10 +58,18 @@ int main(int argc, char** argv)
 	System::scene = scene;
 	scene->setCamera(new Camera(glm::vec3(0, 0, 0.25), glm::vec3(0, 0, 0), perspective));
 
+
+
 	Object* icosahedron = new Icosahedron(4);
 	icosahedron->position.z -= 2;
 	render->setupObject(icosahedron);
 	scene->addObject(icosahedron);
+
+	Object* cube = new Cube("cube.trg");
+	cube->position.z -= 4;
+	cube->position.x -= 1;
+	render->setupObject(cube);
+	scene->addObject(cube);
 
 	while (!glfwWindowShouldClose(window))
 	{

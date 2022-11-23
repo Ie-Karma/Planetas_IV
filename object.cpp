@@ -20,6 +20,7 @@ Object::Object()
 
 Object::Object(int vertex) {
 	this->id = idCounter;
+	idCounter++;
 	this->mesh = new Mesh(vertex);
 	this->shader = mesh->shader;
 	this->modelMatrix = glm::mat4(1.0f);
