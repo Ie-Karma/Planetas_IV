@@ -151,11 +151,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collider.cpp" />
     <ClCompile Include="cube.cpp" />
-    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="icos.cpp" />
     <ClCompile Include="icosahedron.cpp" />
     <ClCompile Include="inputManager.cpp" />
@@ -165,17 +163,15 @@
     <ClCompile Include="render.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="shader.cpp" />
-    <ClCompile Include="spaceShip.cpp" />
     <ClCompile Include="spatialHashing.cpp" />
     <ClCompile Include="system.cpp" />
+    <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="collider.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="cube.h" />
-    <ClInclude Include="enemy.h" />
     <ClInclude Include="icosahedron.h" />
     <ClInclude Include="inputManager.h" />
     <ClInclude Include="mesh.h" />
@@ -183,17 +179,18 @@
     <ClInclude Include="render.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />
-    <ClInclude Include="spaceShip.h" />
     <ClInclude Include="spatialHashing.h" />
     <ClInclude Include="system.h" />
+    <ClInclude Include="texture.h" />
     <ClInclude Include="vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bullet.trg" />
     <None Include="cube.trg" />
     <None Include="ico.trg" />
     <None Include="Makefile" />
     <None Include="progGrafica" />
+    <None Include="skybox.frag" />
+    <None Include="skybox.vert" />
     <None Include="triangle.trg" />
   </ItemGroup>
   <ItemGroup>

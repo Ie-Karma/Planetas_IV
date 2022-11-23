@@ -5,6 +5,7 @@
 #include "vertex.h"
 #include <vector>
 #include "shader.h"
+#include "texture.h"
 
 
 class Mesh {
@@ -15,6 +16,7 @@ public:
 	std::vector<int>* faceList;
 	std::map<std::string, vertex_t> sharedVertices;
 	GLShader* shader;
+	Texture* tex = nullptr;
 	float v[12][4];
 	float radius;
 
@@ -22,6 +24,7 @@ public:
 	Mesh();
 	Mesh(std::string fileName);
 	Mesh(int vertex);
+	Mesh(int test1, int test2);
 
 	void giveColor(vertex_t &vertex);
 	

@@ -25,6 +25,7 @@ public:
 	void drawObject(Object* obj);
 	void drawScene(Scene* scene);
 	void setupObject(Object* obj);
-	void drawObjectGL4(Object* obj);
+	void drawObjectGL4(Object* obj, glm::vec3 camPos);
+	void drawObjectGL4(Object* obj, glm::vec3 camPos, Camera* camera);
 };
 

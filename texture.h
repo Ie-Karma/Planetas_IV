@@ -8,7 +8,10 @@ public:
     int h=0;
     unsigned int glId=-1;
 
+    unsigned int cubemapTexture;
+
     Texture(std::string filename);
+    Texture();
     void bind(int textureunitIdx);
 
 };

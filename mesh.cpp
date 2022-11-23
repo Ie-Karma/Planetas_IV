@@ -36,6 +36,11 @@ Mesh::Mesh(std::string fileName) {
 	loadFromFile(fileName);
 }
 
+Mesh::Mesh(int test1, int test2) {
+	
+	shader = new GLShader("skybox.vert", "skybox.frag");
+}
+
 void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro de forma matematica desplazando por angulos
 {
 	radius = 1;
@@ -117,7 +122,7 @@ void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro 
 }
 
 Mesh::Mesh(int vertex) {
-
+	
 	srand(static_cast <unsigned> (time(0)));
 
 	vertexList = new std::vector<vertex_t>();
@@ -335,9 +340,13 @@ void Mesh::loadFromFile(std::string fileName) {
 	fin >> vshader;
 	std::string fshader;
 	fin >> fshader;
+
+	std::string textureFile;
+	fin >> textureFile;
 	fin.close();
 
-	shader = new GLShader(vshader, fshader);
+	shader = new GLShader("skybox.vert", "skybox.frag");
+	tex = new Texture();
 }
 
 void Mesh::giveColor(vertex_t& vertex) {

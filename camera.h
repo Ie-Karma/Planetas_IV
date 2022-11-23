@@ -6,16 +6,17 @@ typedef enum cameraType_e {
 }cameraType_e;
 
 class Camera {
-private:
+public:
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 lookAt;
 	glm::mat4 viewMatrix;
 	glm::mat4 projMatrix;
+	glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
 	double degreesx;
 	double degreesy;
 	cameraType_e type;
-public:
+
 
 	Camera(glm::vec3 pos, glm::vec3 lookAt, cameraType_e type);
 	void step();
