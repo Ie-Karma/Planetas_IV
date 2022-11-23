@@ -168,6 +168,7 @@
     <ClCompile Include="spaceShip.cpp" />
     <ClCompile Include="spatialHashing.cpp" />
     <ClCompile Include="system.cpp" />
+    <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bullet.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="spaceShip.h" />
     <ClInclude Include="spatialHashing.h" />
     <ClInclude Include="system.h" />
+    <ClInclude Include="texture.h" />
     <ClInclude Include="vertex.h" />
   </ItemGroup>
   <ItemGroup>

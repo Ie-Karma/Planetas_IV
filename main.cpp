@@ -60,14 +60,13 @@ int main(int argc, char** argv)
 
 
 
-	Object* icosahedron = new Icosahedron(4);
-	icosahedron->position.z -= 2;
-	render->setupObject(icosahedron);
-	scene->addObject(icosahedron);
+	//Object* icosahedron = new Icosahedron(4);
+	//icosahedron->position.z -= 2;
+	//render->setupObject(icosahedron);
+	//scene->addObject(icosahedron);
 
 	Object* cube = new Cube("cube.trg");
-	cube->position.z -= 4;
-	cube->position.x -= 1;
+	cube->scale *= 20;
 	render->setupObject(cube);
 	scene->addObject(cube);
 
@@ -83,7 +82,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	delete icosahedron;
+	//delete icosahedron;
 
 	return 0;
 

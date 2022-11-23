@@ -5,6 +5,7 @@
 #include "vertex.h"
 #include <vector>
 #include "shader.h"
+#include "texture.h"
 
 
 class Mesh {
@@ -17,6 +18,7 @@ public:
 	GLShader* shader;
 	float v[12][4];
 	float radius;
+	Texture* tex;
 
 	//métodos	
 	Mesh();

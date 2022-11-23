@@ -9,6 +9,7 @@ public:
     unsigned int glId=-1;
 
     Texture(std::string filename);
+    Texture();
     void bind(int textureunitIdx);
 
 };

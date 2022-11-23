@@ -2,7 +2,6 @@
 #extension GL_NV_shadow_samplers_cube : enable
 
 layout(location=2) uniform vec4 lightPos;
-
 layout(location=3) uniform samplerCube skybox;
 
 
@@ -10,15 +9,11 @@ in vec4 fcolor;
 in vec4 fpos;
 in vec4 fnorm;
 
-in int fTextType;
-
-in vec3 cubeCoords;
-
 out vec4 gli_FragColor;
 
 void main() {
 	
-	float amb=0.5f;	
+	/*float amb=0.5f;	
 	float diffuse=0.0f;
 	
 	vec4 L=normalize(lightPos-fpos);
@@ -29,17 +24,13 @@ void main() {
 	
 	float specular=0.0f;
 	
-        gli_FragColor = fcolor*(amb+diffuse+specular);
+        gli_FragColor = fcolor*(amb+diffuse+specular);*/
 
-	vec4 textColor= vec4(1.0f,0.0f,0.0f,1.0f);
+	vec4 textureColor = vec4(1.0f,0.0f,0.0f,1.0f);
 
-  if(fTextType==1){
-   textColor = texture2D(texture,tempCoord);
+	textureColor = texture(skybox,normalize(fpos.xyz));
 
-  }else if(fTextType==2) {
-   textColor =  texture(skybox, texCoords);
-  }
+	gli_FragColor = textureColor;
 
-   gli_FragColor = textColor;
 	
 }

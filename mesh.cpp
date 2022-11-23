@@ -338,6 +338,7 @@ void Mesh::loadFromFile(std::string fileName) {
 	fin.close();
 
 	shader = new GLShader(vshader, fshader);
+	tex = new Texture();
 }
 
 void Mesh::giveColor(vertex_t& vertex) {
