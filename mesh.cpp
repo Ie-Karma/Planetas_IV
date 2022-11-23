@@ -37,7 +37,7 @@ Mesh::Mesh(std::string fileName) {
 }
 
 Mesh::Mesh(int test1, int test2) {
-	
+
 	shader = new GLShader("skybox.vert", "skybox.frag");
 }
 
@@ -122,7 +122,7 @@ void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro 
 }
 
 Mesh::Mesh(int vertex) {
-	
+
 	srand(static_cast <unsigned> (time(0)));
 
 	vertexList = new std::vector<vertex_t>();
@@ -345,7 +345,7 @@ void Mesh::loadFromFile(std::string fileName) {
 	fin >> textureFile;
 	fin.close();
 
-	shader = new GLShader("skybox.vert", "skybox.frag");
+	shader = new GLShader(vshader, fshader);
 	tex = new Texture();
 }
 
@@ -367,7 +367,7 @@ void Mesh::checkSharedVertex(vertex_t& vertexToCheck) {
 	if (sharedVertices.find(newKey) != sharedVertices.end()) {
 
 		vertexToCheck.positionInList = sharedVertices[newKey].positionInList;
-		
+
 	}
 	else
 	{
@@ -382,7 +382,7 @@ void Mesh::checkSharedVertex(vertex_t& vertexToCheck) {
 
 }
 
-void Mesh::planetShape() {	
+void Mesh::planetShape() {
 
 	for (int i = 0; i < vertexList->size(); i++)
 	{
@@ -392,7 +392,7 @@ void Mesh::planetShape() {
 
 		float randomTest = rand() % 3;
 
-		if (randomTest==2)
+		if (randomTest == 2)
 		{
 			(*vertexList)[i].posicion.x *= randomHeight;
 			(*vertexList)[i].posicion.y *= randomHeight;
@@ -404,11 +404,11 @@ void Mesh::planetShape() {
 			+ (*vertexList)[i].posicion.z * (*vertexList)[i].posicion.z);
 
 
-		if (length >= radius-0.02 && length <= radius+0.02)
+		if (length >= radius - 0.02 && length <= radius + 0.02)
 		{
-			setColor(i, glm::vec4(0,0.5,0,0));
+			setColor(i, glm::vec4(0, 0.5, 0, 0));
 		}
-		else if(length < radius)
+		else if (length < radius)
 		{
 			setColor(i, glm::vec4(0, 0, 1, 0));
 		}
@@ -418,7 +418,7 @@ void Mesh::planetShape() {
 		}
 
 
-		
+
 	}
 }
 

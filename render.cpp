@@ -102,7 +102,9 @@ void Render::drawObjectGL4(Object* obj, glm::vec3 camPos) {
         glVertexAttribPointer(vtext, 2, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (void*)offsetof(vertex_t, texCoord));
 
         int textureUnit = 0;
-        glUniform1i(4, textureUnit);
+
+        glUniform1i(6, textureUnit);
+        glUniform1i(7, 2);
 
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
@@ -174,7 +176,7 @@ void Render::drawScene(Scene* scene) {
     for (auto it = objList->begin();
         it != objList->end();
         it++) {
-        drawObjectGL4(it->second, scene->getCamera()->getPosition(),scene->cam);
+        drawObjectGL4(it->second, scene->getCamera()->getPosition());
         //drawObjectGL4(it->second, scene->getCamera()->getPosition());
     }
 }

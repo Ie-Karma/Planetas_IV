@@ -9,6 +9,8 @@ layout(location=4) uniform sampler2D texture;
 
 layout(location=5) uniform vec2 scroll;
 
+layout(location=6) uniform samplerCube skybox;
+
 
 in vec4 fcolor;
 
@@ -18,13 +20,16 @@ in vec4 fnorm;
 
 in vec2 ftext;
 
+in int fTextType;
+
+in vec3 cubeCoords;
+
 
 out vec4 gli_FragColor;
 
+a
 
 void main() {
-
-
 	
 
 	/*vec4 finalColor=fcolor;
@@ -41,6 +46,7 @@ void main() {
 	tempCoord.y += scroll.y;
 
 	vec4 textColor=texture2D(texture,tempCoord);
+
 
 	if( textColor.a < 0.5f){
 	    discard;
@@ -61,11 +67,21 @@ void main() {
 
 
   //gli_FragColor = (finalColor)*(amb+diffuse+specular);
-  gli_FragColor = textColor;*/
+  gli_FragColor = textColor;
+  */
+  vec4 textColor= vec4(1.0f,0.0f,0.0f,1.0f);
+
+  if(fTextType==1){
+   textColor = texture2D(texture,tempCoord);
+
+  }else if(fTextType==2) {
+   textColor =  texture(skybox, texCoords);
+  }
+
+    gli_FragColor = textColor;
 
 
-
-	float amb=0.5f;	
+	/*float amb=0.5f;	
 	float diffuse=0.0f;
 	
 	vec4 L=normalize(lightPos-fpos);
@@ -76,7 +92,7 @@ void main() {
 	
 	float specular=0.0f;
 	
-    gli_FragColor = fcolor*(amb+diffuse+specular);
+    gli_FragColor = fcolor*(amb+diffuse+specular);*/
 	
 
 

@@ -32,8 +32,8 @@ void GLShader::checkCompileError(unsigned int program)
 	GLint retCode;
 	char errorLog[1024];
 	glGetShaderiv(program, GL_LINK_STATUS, &retCode);
-	if ( retCode == GL_FALSE ) {
-		glGetProgramInfoLog(program, sizeof(errorLog), NULL, errorLog);
+	if (!retCode) {
+		glGetProgramInfoLog(program, 1024, NULL, errorLog);
 		std::cout<<errorLog<<std::endl;
 	}
 
