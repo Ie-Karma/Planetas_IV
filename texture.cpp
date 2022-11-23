@@ -32,18 +32,18 @@ Texture::Texture(std::string filename) {
 		// All the faces of the cubemap (make sure they are in this exact order)
 		std::string facesCubemap[6] =
 		{
-			//"data/bkg1_right.png",
-			//"data/bkg1_left.png",
-			//"data/bkg1_top.png",
-			//"data/bkg1_bot.png",
-			//"data/bkg1_front.png",
-			//"data/bkg1_back.png",
+			"data/bkg1_right.png",
+			"data/bkg1_left.png",
+			"data/bkg1_top.png",
+			"data/bkg1_bot.png",
+			"data/bkg1_front.png",
+			"data/bkg1_back.png",
+			/*"data/front.png",
 			"data/front.png",
 			"data/front.png",
 			"data/front.png",
 			"data/front.png",
-			"data/front.png",
-			"data/front.png",
+			"data/front.png",*/
 		};
 
 		// Creates the cubemap texture object
