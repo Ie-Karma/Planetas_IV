@@ -9,26 +9,33 @@ in vec4 fcolor;
 in vec4 fpos;
 in vec4 fnorm;
 
+flat in int fTextType;
+
 out vec4 gli_FragColor;
 
-void main() {
-	
-	/*float amb=0.5f;	
-	float diffuse=0.0f;
-	
-	vec4 L=normalize(lightPos-fpos);
-	float I=1.0f;
-	float K=1.0f;
-	
-	diffuse=I*K*max(dot(L,fnorm),0.0f);
-	
-	float specular=0.0f;
-	
-        gli_FragColor = fcolor*(amb+diffuse+specular);*/
+void main() {	
 
 	vec4 textureColor = vec4(1.0f,0.0f,0.0f,1.0f);
 
-	textureColor = texture(skybox,normalize(fpos.xyz));
+	if(fTextType==0){
+		float amb=0.5f;	
+		float diffuse=0.0f;
+	
+		vec4 L=normalize(lightPos-fpos);
+		float I=1.0f;
+		float K=1.0f;
+	
+		diffuse=I*K*max(dot(L,fnorm),0.0f);
+	
+		float specular=0.0f;
+	
+        textureColor = fcolor*(amb+diffuse+specular);
+	}else if(fTextType==1){
+		//textureColor = texture2D(skybox, tempCoords);
+	}else if(fTextType==2){
+		textureColor = texture(skybox,normalize(fpos.xyz));
+	}	
+
 
 	gli_FragColor = textureColor;
 

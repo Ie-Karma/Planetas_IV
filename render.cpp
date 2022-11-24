@@ -84,13 +84,14 @@ void Render::drawObjectGL4(Object* obj){
 	
 	glm::vec4 lightPos(0.0f,0.0f,3.0f,1.0f);
 
-	obj->mesh->tex->bind(0);
+	int textureUnit = 0;
+	obj->mesh->tex->bind(textureUnit);
 	
 	glUniformMatrix4fv(0,1,GL_FALSE,&(proj*view*obj->getMatrix())[0][0]);	
 	glUniformMatrix4fv(1,1,GL_FALSE,&(obj->getMatrix())[0][0]);	
 	glUniform4fv(2,1,&lightPos[0]);
-	glUniform1i(7, 2);
-	glUniform1i(3, 0);
+	glUniform1i(7, obj->mesh->tex->textType);
+	glUniform1i(3, textureUnit);
 
 	glDrawElements(GL_TRIANGLES, obj->mesh->faceList->size(), GL_UNSIGNED_INT,nullptr);
 }
