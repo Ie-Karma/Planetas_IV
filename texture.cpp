@@ -33,14 +33,17 @@ Texture::Texture(std::string filename) {
 
 		if (textType != 0) {
 			// All the faces of the cubemap (make sure they are in this exact order)
+
+			std::string carpeta = "data/skybox4/";
+
 			std::string facesCubemap[6] =
 			{
-				"data/bkg1_right.png",
-				"data/bkg1_left.png",
-				"data/bkg1_top.png",
-				"data/bkg1_bot.png",
-				"data/bkg1_front.png",
-				"data/bkg1_back.png"
+				carpeta + "right.jpg",
+				carpeta + "left.jpg",
+				carpeta + "top.jpg",
+				carpeta + "bot.jpg",
+				carpeta + "front.jpg",
+				carpeta + "back.jpg"
 			};
 
 			// Creates the cubemap texture object
