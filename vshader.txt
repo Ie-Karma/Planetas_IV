@@ -1,8 +1,11 @@
 #version 430
+#extension GL_NV_shadow_samplers_cube : enable
 
 layout(location=0) uniform mat4 MVP;
 layout(location=1) uniform mat4 M;
 layout(location=7) uniform int textType;
+layout(location=8) uniform samplerCube cubeMap;
+
 
 
 layout(location=0)in vec4 vpos;
@@ -19,9 +22,25 @@ flat out int fTextType;
 void main() {
 	gl_Position=MVP*vpos;
 	fpos=M*vpos;
+
 	fnorm=normalize(inverse(transpose(M))*vnorm);
 	
 	fcolor = vcolor;
 
-	fTextType= textType;
+	fTextType = textType;
+
+		if(textType == 0){
+			vec4 test = texture(cubeMap,normalize(fpos.xyz));
+
+			vec4 modiefiedVertex = vpos;
+
+			
+			
+			modiefiedVertex.x *= test.x;
+			modiefiedVertex.y *= test.x;
+			modiefiedVertex.z *= test.x;
+
+			
+		gl_Position = MVP * modiefiedVertex;
+	}
 }

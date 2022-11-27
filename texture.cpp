@@ -31,7 +31,7 @@ Texture::Texture(std::string filename) {
 	Texture::Texture(int textType, std::string folder) {
 		this->textType = textType;
 
-		if (textType != 0) {
+		
 			// All the faces of the cubemap (make sure they are in this exact order)
 
 			std::string carpeta = "data/" + folder +"/";
@@ -89,7 +89,7 @@ Texture::Texture(std::string filename) {
 			}
 
 			this->glId = cubemapTexture;
-		}
+		
 	}
 
 void Texture::bind(int textureunitIdx) {

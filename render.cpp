@@ -1,4 +1,5 @@
 #include "render.h"
+#include <cstdlib>
 
 
 Render::Render(){
@@ -59,6 +60,8 @@ void Render::drawObject(Object* obj){
 
 
 void Render::drawObjectGL4(Object* obj){
+
+
 	obj->computeMatrix();
 	
 	bufferObject_t bo=boList[obj->id];
@@ -92,6 +95,7 @@ void Render::drawObjectGL4(Object* obj){
 	glUniform4fv(2,1,&lightPos[0]);
 	glUniform1i(7, obj->mesh->tex->textType);
 	glUniform1i(3, textureUnit);
+	glUniform1i(8, textureUnit);
 
 	glDrawElements(GL_TRIANGLES, obj->mesh->faceList->size(), GL_UNSIGNED_INT,nullptr);
 }

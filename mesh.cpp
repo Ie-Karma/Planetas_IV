@@ -164,7 +164,8 @@ Mesh::Mesh(int vertex) {
 	std::string fshader = "fshader.txt";
 
 	shader = new GLShader(vshader, fshader);
-	tex = new Texture(0,"");
+	tex = new Texture(0, "terrain");
+	//tex = new Texture(0,"");
 
 }
 
@@ -387,12 +388,12 @@ void Mesh::planetShape() {
 
 		float randomTest = rand() % 3;
 
-		if (randomTest==2)
-		{
-			(*vertexList)[i].posicion.x *= randomHeight;
-			(*vertexList)[i].posicion.y *= randomHeight;
-			(*vertexList)[i].posicion.z *= randomHeight;
-		}
+		//if (randomTest==2)
+		//{
+		//	(*vertexList)[i].posicion.x *= randomHeight;
+		//	(*vertexList)[i].posicion.y *= randomHeight;
+		//	(*vertexList)[i].posicion.z *= randomHeight;
+		//}
 
 		float length = sqrt((*vertexList)[i].posicion.x * (*vertexList)[i].posicion.x
 			+ (*vertexList)[i].posicion.y * (*vertexList)[i].posicion.y
