@@ -32,13 +32,17 @@ void main() {
 		if(textType == 0){
 			vec4 test = texture(cubeMap,normalize(fpos.xyz));
 
+
+
 			vec4 modiefiedVertex = vpos;
 
+			float OldRange = (1 - 0);  
+			float NewRange = (1.1 - 0.9);  
+			float NewValue = (((test.x - 0) * NewRange) / OldRange) + 0.9;
 			
-			
-			modiefiedVertex.x *= test.x;
-			modiefiedVertex.y *= test.x;
-			modiefiedVertex.z *= test.x;
+			modiefiedVertex.x *= NewValue;
+			modiefiedVertex.y *= NewValue;
+			modiefiedVertex.z *= NewValue;
 
 			
 		gl_Position = MVP * modiefiedVertex;

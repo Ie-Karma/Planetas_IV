@@ -164,7 +164,7 @@ Mesh::Mesh(int vertex) {
 	std::string fshader = "fshader.txt";
 
 	shader = new GLShader(vshader, fshader);
-	tex = new Texture(0, "terrain");
+	tex = new Texture(0, "skybox1");
 	//tex = new Texture(0,"");
 
 }
