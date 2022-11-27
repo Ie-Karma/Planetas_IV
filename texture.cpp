@@ -28,13 +28,13 @@ Texture::Texture(std::string filename) {
 }
 
 
-	Texture::Texture(int textType) {
+	Texture::Texture(int textType, std::string folder) {
 		this->textType = textType;
 
 		if (textType != 0) {
 			// All the faces of the cubemap (make sure they are in this exact order)
 
-			std::string carpeta = "data/skybox4/";
+			std::string carpeta = "data/" + folder +"/";
 
 			std::string facesCubemap[6] =
 			{

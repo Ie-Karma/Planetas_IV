@@ -38,3 +38,4 @@
 20 22 23
 vshader.txt
 fshader.txt
+skybox1

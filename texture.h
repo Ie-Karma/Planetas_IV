@@ -10,7 +10,7 @@ public:
     unsigned int glId=-1;
 
     Texture(std::string filename);
-    Texture(int textType);
+    Texture(int textType, std::string folder);
     void bind(int textureunitIdx);
 
 };

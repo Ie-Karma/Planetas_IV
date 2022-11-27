@@ -164,7 +164,7 @@ Mesh::Mesh(int vertex) {
 	std::string fshader = "fshader.txt";
 
 	shader = new GLShader(vshader, fshader);
-	tex = new Texture(0);
+	tex = new Texture(0,"");
 
 }
 
@@ -336,10 +336,12 @@ void Mesh::loadFromFile(std::string fileName) {
 	fin >> vshader;
 	std::string fshader;
 	fin >> fshader;
+	std::string texFolder;
+	fin >> texFolder;
 	fin.close();
 
 	shader = new GLShader(vshader, fshader);
-	tex = new Texture(2);
+	tex = new Texture(2,texFolder);
 }
 
 void Mesh::giveColor(vertex_t& vertex) {
