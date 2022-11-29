@@ -182,7 +182,7 @@ Mesh::Mesh(int vertex) {
 	std::string fshader = "fshader.txt";
 
 	shader = new GLShader(vshader, fshader);
-	tex = new Texture(1, "terrain");
+	tex = new Texture(3, "terrain");
 
 }
 

@@ -19,16 +19,30 @@ void main() {
 
 	if(fTextType==0){
 		textureColor = texture(skybox,normalize(fpos.xyz));
+		gli_FragColor = textureColor;
 	}else if(fTextType==1){
 		//textureColor = texture2D(skybox, tempCoords);
+		gli_FragColor = textureColor;
 	}else if(fTextType==2){
 		textureColor = texture(skybox,normalize(fpos.xyz));
+		gli_FragColor = textureColor;
 	}	else if (fTextType==3){
+		float amb=0.5f;	
+	float diffuse=0.0f;
 	
+	vec4 L=normalize(lightPos-fpos);
+	float I=1.0f;
+	float K=1.0f;
+	
+	diffuse=I*K*max(dot(L,fnorm),0.0f);
+	
+	float specular=0.0f;
+	
+        gli_FragColor = fcolor*(amb+diffuse+specular);
 	}
 
 
-	gli_FragColor = textureColor;
+	
 
 	
 }

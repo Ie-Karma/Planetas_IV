@@ -14,4 +14,8 @@ C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(607,52): warning C4267
 C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(621,17): warning C4305: 'initializing': truncation from 'double' to 'float'
 C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(622,18): warning C4305: 'initializing': truncation from 'double' to 'float'
 C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\mesh.cpp(625,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  LINK : C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\x64\Debug\ProgGraf.exe not found or not built by the last incremental link; performing full link
+glew32s.lib(glew.obj) : warning LNK4099: PDB '' was not found with 'glew32s.lib(glew.obj)' or at ''; linking object as if no debug info
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   ProgGraf.vcxproj -> C:\Users\28dav\source\repos\Ie-Karma\Planetas_IV\x64\Debug\ProgGraf.exe
