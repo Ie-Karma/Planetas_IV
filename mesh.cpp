@@ -176,13 +176,13 @@ Mesh::Mesh(int vertex) {
 		subdividirPorCorte(vertex0, vertex1, vertex2, v1, v2, v3, vertex);
 	}
 
-	planetShape();
+	//planetShape();
 
 	std::string vshader = "vshader.txt";
 	std::string fshader = "fshader.txt";
 
 	shader = new GLShader(vshader, fshader);
-	tex = new Texture(3, "terrain");
+	tex = new Texture(0, "terrain");
 
 }
 
@@ -210,11 +210,11 @@ void Mesh::normalize(float v[3]) {
 
 
 void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3> vertex1, std::array<float, 3> vertex2, int triangleIndex0, int triangleIndex1, int triangleIndex2, long depth) {
-	std::vector<std::array<float, 3>> S1;
-	std::vector<std::array<float, 3>> S2;
+	std::vector<std::array<float, 3>> S1,S2,S3;
+	srand(time(0));
 
 
-	std::array<float, 3> s1Distance = calculateDistance(vertex0, vertex1, depth);
+	std::array<float, 3> Distance = calculateDistance(vertex0, vertex1, depth);
 
 	S1.push_back(vertex0);
 
@@ -222,17 +222,14 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 	for (int i = 1; i <= depth; i++)
 	{
 
-		S1.push_back(moveVertex(vertex0, multiplyVertex(s1Distance, i)));
-
-
+		S1.push_back(moveVertex(vertex0, multiplyVertex(Distance, i)));
+		
 	}
 
 	S1.push_back(vertex1);
 
 
-	std::array<float, 3> s2Distance = calculateDistance(vertex0, vertex2, depth);
-
-
+	Distance = calculateDistance(vertex0, vertex2, depth);
 
 
 	S2.push_back(vertex0);
@@ -241,12 +238,28 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 
 	for (int i = 1; i <= depth; i++){
 
-		S2.push_back(moveVertex(vertex0, multiplyVertex(s2Distance, i)));
+		S2.push_back(moveVertex(vertex0, multiplyVertex(Distance, i)));
 
 
 	}
 
 	S2.push_back(vertex2);
+
+
+	Distance = calculateDistance(vertex1, vertex2, depth);
+
+
+	S3.push_back(vertex1);
+
+
+
+	for (int i = 1; i <= depth; i++) {
+
+		S3.push_back(moveVertex(vertex1, multiplyVertex(Distance, i)));
+
+	}
+
+	S3.push_back(vertex2);
 
 	std::vector<std::vector<std::array<float, 3>>> rowList;
 
@@ -257,7 +270,7 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 	rowList.push_back(firstRow);
 
 
-	for (int i = 1; i < depth + 2; i++)
+	for (int i = 1; i < depth + 1; i++)
 	{
 		std::vector<std::array<float, 3>> row;
 
@@ -270,7 +283,6 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 
 			for (int j = 1; j < i; j++)
 			{
-
 				row.push_back(moveVertex(S1[i], multiplyVertex(rowDistance, j)));
 			}
 		}
@@ -280,7 +292,7 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 		rowList.push_back(row);
 	}
 
-
+	rowList.push_back(S3);
 
 
 
@@ -297,6 +309,11 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 				vertice0.posicion.z = rowList[i - 1][j][2];
 				vertice0.posicion.w = 1.0f;
 
+				vertice0.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				vertice0.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				vertice0.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				vertice0.color.w = 1;
+
 				checkSharedVertex(vertice0);
 
 				normalize(rowList[i][j]);
@@ -308,6 +325,11 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 				vertice1.posicion.z = rowList[i][j][2];
 				vertice1.posicion.w = 1.0f;
 
+				vertice1.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				vertice1.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				vertice1.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				vertice1.color.w = 1;
+
 				checkSharedVertex(vertice1);
 
 				normalize(rowList[i][j + 1]);
@@ -318,6 +340,11 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 				vertice2.posicion.y = rowList[i][j + 1][1];
 				vertice2.posicion.z = rowList[i][j + 1][2];
 				vertice2.posicion.w = 1.0f;
+
+				vertice2.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				vertice2.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				vertice2.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				vertice2.color.w = 1;
 
 				checkSharedVertex(vertice2);
 
@@ -342,6 +369,11 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 				inverseVertice0.posicion.z = rowList[i][j][2];
 				inverseVertice0.posicion.w = 1;
 
+				inverseVertice0.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				inverseVertice0.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				inverseVertice0.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				inverseVertice0.color.w = 1;
+
 				checkSharedVertex(inverseVertice0);
 
 				normalize(rowList[i + 1][j + 1]);
@@ -353,6 +385,11 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 				inverseVertice1.posicion.z = rowList[i + 1][j + 1][2];
 				inverseVertice1.posicion.w = 1;
 
+				inverseVertice1.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				inverseVertice1.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				inverseVertice1.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				inverseVertice1.color.w = 1;
+
 				checkSharedVertex(inverseVertice1);
 
 				normalize(rowList[i][j + 1]);
@@ -363,6 +400,11 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 				inverseVertice2.posicion.y = rowList[i][j + 1][1];
 				inverseVertice2.posicion.z = rowList[i][j + 1][2];
 				inverseVertice2.posicion.w = 1;
+
+				inverseVertice2.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				inverseVertice2.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				inverseVertice2.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				inverseVertice2.color.w = 1;
 
 				checkSharedVertex(inverseVertice2);
 
@@ -414,6 +456,8 @@ std::array<float, 3> Mesh::calculateDistance(std::array<float, 3> vertex0, std::
 	distance[2] /= (depth + 1);
 	return distance;
 }
+
+
 
 
 void Mesh::recursiveSubdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int tin3, long depth) {
