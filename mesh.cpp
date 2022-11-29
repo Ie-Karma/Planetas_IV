@@ -3,6 +3,7 @@
 #include <fstream>
 #include <math.h>
 #include <assert.h>
+#include <array>
 
 
 
@@ -86,6 +87,7 @@ void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro 
 	v[11][2] = -radius;
 	v[11][3] = 0;
 
+	//meter los vertices en vertexList
 	for (int i = 0; i < 12; i++)
 	{
 		vertex_t v1;
@@ -95,7 +97,7 @@ void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro 
 		v1.posicion.z = v[i][2];
 		v1.posicion.w = 1;
 
-		//giveColor(v1);
+		
 
 		v1.color.x = 1;
 		v1.color.y = 0;
@@ -107,6 +109,8 @@ void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro 
 		std::string test3 = std::to_string(v1.posicion.z);
 
 		std::string newKey = test1 + test2 + test3;
+
+		v1.positionInList = vertexList->size();
 
 		sharedVertices.insert({ newKey, v1 });
 
@@ -129,21 +133,21 @@ Mesh::Mesh(int vertex) {
 	int tindices[20][3];
 	for (int i = 1; i <= 5; i++)
 	{
-		tindices[i - 1][0] = 0;
+		tindices[i - 1][2] = 0;
 		tindices[i - 1][1] = i;
-		tindices[i - 1][2] = 1 + (i % 5);
+		tindices[i - 1][0] = 1 + (i % 5);
 
-		tindices[i + 4][0] = i;
-		tindices[i + 4][1] = 1 + (i % 5);
-		tindices[i + 4][2] = i + 5;
+		tindices[i + 4][2] = 1 + (i % 5);
+		tindices[i + 4][1] = i;		
+		tindices[i + 4][0] = i + 5;
 
-		tindices[i + 9][0] = i + 5;
+		tindices[i + 9][2] = i + 5;
 		tindices[i + 9][1] = 6 + (i % 5);
-		tindices[i + 9][2] = 1 + (i % 5);
+		tindices[i + 9][0] = 1 + (i % 5);
 
-		tindices[i + 14][0] = 11;
-		tindices[i + 14][1] = i + 5;
-		tindices[i + 14][2] = 6 + (i % 5);
+		tindices[i + 14][2] = i + 5;
+		tindices[i + 14][1] = 11;	
+		tindices[i + 14][0] = 6 + (i % 5);
 	}
 
 	for (int i = 0; i < 20; i++)
@@ -154,8 +158,22 @@ Mesh::Mesh(int vertex) {
 		v2 = tindices[i][1];
 		v3 = tindices[i][2];
 
+		std::array<float, 3> vertex0,vertex1,vertex2;
+		
+		vertex0[0] = v[v1][0];
+		vertex0[1] = v[v1][1];
+		vertex0[2] = v[v1][2];
 
-		recursiveSubdivide(v[v1], v[v2], v[v3], v1, v2, v3, vertex);
+		vertex1[0] = v[v2][0];
+		vertex1[1] = v[v2][1];
+		vertex1[2] = v[v2][2];
+
+		vertex2[0] = v[v3][0];
+		vertex2[1] = v[v3][1];
+		vertex2[2] = v[v3][2];
+
+		//recursiveSubdivide(v[v1], v[v2], v[v3], v1, v2, v3, vertex);
+		subdividirPorCorte(vertex0, vertex1, vertex2, v1, v2, v3, vertex);
 	}
 
 	planetShape();
@@ -164,9 +182,19 @@ Mesh::Mesh(int vertex) {
 	std::string fshader = "fshader.txt";
 
 	shader = new GLShader(vshader, fshader);
-	tex = new Texture(0, "skybox1");
-	//tex = new Texture(0,"");
+	tex = new Texture(1, "terrain");
 
+}
+
+void Mesh::normalize(std::array<float, 3> &v) {
+	float d = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+	assert(d > 0);
+	v[0] /= d; v[1] /= d; v[2] /= d;
+
+	for (int i = 0; i < 3; i++)
+	{
+		v[i] *= radius;
+	}
 }
 
 void Mesh::normalize(float v[3]) {
@@ -179,6 +207,214 @@ void Mesh::normalize(float v[3]) {
 		v[i] *= radius;
 	}
 }
+
+
+void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3> vertex1, std::array<float, 3> vertex2, int triangleIndex0, int triangleIndex1, int triangleIndex2, long depth) {
+	std::vector<std::array<float, 3>> S1;
+	std::vector<std::array<float, 3>> S2;
+
+
+	std::array<float, 3> s1Distance = calculateDistance(vertex0, vertex1, depth);
+
+	S1.push_back(vertex0);
+
+
+	for (int i = 1; i <= depth; i++)
+	{
+
+		S1.push_back(moveVertex(vertex0, multiplyVertex(s1Distance, i)));
+
+
+	}
+
+	S1.push_back(vertex1);
+
+
+	std::array<float, 3> s2Distance = calculateDistance(vertex0, vertex2, depth);
+
+
+
+
+	S2.push_back(vertex0);
+
+
+
+	for (int i = 1; i <= depth; i++){
+
+		S2.push_back(moveVertex(vertex0, multiplyVertex(s2Distance, i)));
+
+
+	}
+
+	S2.push_back(vertex2);
+
+	std::vector<std::vector<std::array<float, 3>>> rowList;
+
+	std::vector<std::array<float, 3>> firstRow;
+
+	firstRow.push_back(S1[0]);
+
+	rowList.push_back(firstRow);
+
+
+	for (int i = 1; i < depth + 2; i++)
+	{
+		std::vector<std::array<float, 3>> row;
+
+		row.push_back(S1[i]);
+
+
+		if (i >= 2)
+		{
+			std::array<float, 3> rowDistance = calculateDistance(S1[i], S2[i], i);
+
+			for (int j = 1; j < i; j++)
+			{
+
+				row.push_back(moveVertex(S1[i], multiplyVertex(rowDistance, j)));
+			}
+		}
+
+		row.push_back(S2[i]);
+
+		rowList.push_back(row);
+	}
+
+
+
+
+
+		for (int i = 1; i < rowList.size(); i++)
+		{
+			for (int j = 0; j < rowList[i].size() - 1; j++) {
+
+				normalize(rowList[i - 1][j]);
+
+				vertex_t vertice0;
+
+				vertice0.posicion.x = rowList[i - 1][j][0];
+				vertice0.posicion.y = rowList[i - 1][j][1];
+				vertice0.posicion.z = rowList[i - 1][j][2];
+				vertice0.posicion.w = 1.0f;
+
+				checkSharedVertex(vertice0);
+
+				normalize(rowList[i][j]);
+
+				vertex_t vertice1;
+
+				vertice1.posicion.x = rowList[i][j][0];
+				vertice1.posicion.y = rowList[i][j][1];
+				vertice1.posicion.z = rowList[i][j][2];
+				vertice1.posicion.w = 1.0f;
+
+				checkSharedVertex(vertice1);
+
+				normalize(rowList[i][j + 1]);
+
+				vertex_t vertice2;
+
+				vertice2.posicion.x = rowList[i][j + 1][0];
+				vertice2.posicion.y = rowList[i][j + 1][1];
+				vertice2.posicion.z = rowList[i][j + 1][2];
+				vertice2.posicion.w = 1.0f;
+
+				checkSharedVertex(vertice2);
+
+
+				faceList->push_back(vertice0.positionInList);
+				faceList->push_back(vertice1.positionInList);
+				faceList->push_back(vertice2.positionInList);
+
+			}
+
+		}
+
+		for (int i = 1; i < rowList.size()-1; i++)
+		{
+			for (int j = 0; j < rowList[i].size() - 1; j++) {
+				normalize(rowList[i][j]);
+
+				vertex_t inverseVertice0;
+
+				inverseVertice0.posicion.x = rowList[i][j][0];
+				inverseVertice0.posicion.y = rowList[i][j][1];
+				inverseVertice0.posicion.z = rowList[i][j][2];
+				inverseVertice0.posicion.w = 1;
+
+				checkSharedVertex(inverseVertice0);
+
+				normalize(rowList[i + 1][j + 1]);
+
+				vertex_t inverseVertice1;
+
+				inverseVertice1.posicion.x = rowList[i + 1][j + 1][0];
+				inverseVertice1.posicion.y = rowList[i + 1][j + 1][1];
+				inverseVertice1.posicion.z = rowList[i + 1][j + 1][2];
+				inverseVertice1.posicion.w = 1;
+
+				checkSharedVertex(inverseVertice1);
+
+				normalize(rowList[i][j + 1]);
+
+				vertex_t inverseVertice2;
+
+				inverseVertice2.posicion.x = rowList[i][j + 1][0];
+				inverseVertice2.posicion.y = rowList[i][j + 1][1];
+				inverseVertice2.posicion.z = rowList[i][j + 1][2];
+				inverseVertice2.posicion.w = 1;
+
+				checkSharedVertex(inverseVertice2);
+
+
+				faceList->push_back(inverseVertice0.positionInList);
+				faceList->push_back(inverseVertice1.positionInList);
+				faceList->push_back(inverseVertice2.positionInList);
+			}
+		}
+
+	
+
+
+}
+
+std::array<float, 3> Mesh::multiplyVertex(std::array<float, 3> vertex, int multiply) {
+	std::array<float, 3> newVertex;
+
+	newVertex[0] = vertex[0] * multiply;
+	newVertex[1] = vertex[1] * multiply;
+	newVertex[2] = vertex[2] * multiply;
+
+	return newVertex;
+}
+
+std::array<float, 3> Mesh::moveVertex(std::array<float, 3> vertex, std::array<float, 3> distance) {
+
+	std::array<float, 3> newVertex;
+
+	newVertex[0] = vertex[0] + distance[0];
+	newVertex[1] = vertex[1] + distance[1];
+	newVertex[2] = vertex[2] + distance[2];
+
+	return newVertex;
+}
+
+
+
+std::array<float, 3> Mesh::calculateDistance(std::array<float, 3> vertex0, std::array<float, 3> vertex1, long depth) {
+
+	std::array<float, 3> distance;
+
+	distance[0] = vertex1[0] - vertex0[0];
+	distance[1] = vertex1[1] - vertex0[1];
+	distance[2] = vertex1[2] - vertex0[2];
+
+	distance[0] /= (depth + 1);
+	distance[1] /= (depth + 1);
+	distance[2] /= (depth + 1);
+	return distance;
+}
+
 
 void Mesh::recursiveSubdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int tin3, long depth) {
 

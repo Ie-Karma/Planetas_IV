@@ -23,7 +23,9 @@ void main() {
 		//textureColor = texture2D(skybox, tempCoords);
 	}else if(fTextType==2){
 		textureColor = texture(skybox,normalize(fpos.xyz));
-	}	
+	}	else if (fTextType==3){
+	
+	}
 
 
 	gli_FragColor = textureColor;

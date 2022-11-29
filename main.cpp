@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream> 
 #include "common.h"
 #include <vector>
 #include "mesh.h"
@@ -16,14 +16,24 @@
 
 
 
-bool renderfps(double framerate)
+bool renderfps(double framerate, GLFWwindow* window)
 {
-	static double currentTime = 0;
 	static double lastTime = 0;
+	static double currentTime = 0;
+	double timeDiff;
+	int counter = 0;
+	
+	
 
 	currentTime = glfwGetTime();
-	if (currentTime - lastTime >= 1.0 / framerate)
+	timeDiff = currentTime - lastTime;
+	counter++;
+	if (timeDiff >= 1.0 / framerate)
 	{
+		std::string FPS = std::to_string((1.0 / timeDiff) * counter);
+		std::string ms = std::to_string((timeDiff / counter) * 1000);
+		std::string newTitle = "Planetas IV - " + FPS + "FPS / " + ms + "ms";
+		glfwSetWindowTitle(window, newTitle.c_str());
 		lastTime = currentTime;
 		return true;
 	}
@@ -60,7 +70,7 @@ int main(int argc, char** argv)
 
 
 
-	Object* icosahedron = new Icosahedron(5);
+	Object* icosahedron = new Icosahedron(1);
 	icosahedron->position.z -= 2;
 	render->setupObject(icosahedron);
 	scene->addObject(icosahedron);
@@ -72,10 +82,12 @@ int main(int argc, char** argv)
 
 
 
+
+
 	while (!glfwWindowShouldClose(window))
 	{
 
-		if (renderfps(60.0f)) {
+		if (renderfps(60.0f, window)) {
 			scene->step(0.0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			render->drawScene(scene);
