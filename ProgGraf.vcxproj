@@ -193,6 +193,7 @@
   <ItemGroup>
     <None Include="bullet.trg" />
     <None Include="cube.trg" />
+    <None Include="cube2.trg" />
     <None Include="ico.trg" />
     <None Include="Makefile" />
     <None Include="progGrafica" />

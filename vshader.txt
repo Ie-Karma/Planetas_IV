@@ -4,7 +4,7 @@
 layout(location=0) uniform mat4 MVP;
 layout(location=1) uniform mat4 M;
 layout(location=7) uniform int textType;
-layout(location=8) uniform samplerCube cubeMap;
+layout(location=3) uniform samplerCube cubeMap;
 
 
 
@@ -18,6 +18,7 @@ out vec4 fcolor;
 out vec4 fpos;
 out vec4 fnorm;
 flat out int fTextType;
+out vec4 fcubeTexCoord;
 
 void main() {
 	gl_Position=MVP*vpos;
@@ -28,6 +29,8 @@ void main() {
 	fcolor = vcolor;
 
 	fTextType = textType;
+
+	fcubeTexCoord = vpos;
 
 		if(textType == 0){
 			vec4 test = texture(cubeMap,normalize(fpos.xyz));
