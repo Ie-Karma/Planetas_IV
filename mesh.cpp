@@ -33,7 +33,6 @@ Mesh::Mesh(std::string fileName) {
 
 	vertexList = new std::vector<vertex_t>();
 	faceList = new std::vector<int>();
-	//añadir vértices
 	loadFromFile(fileName);
 }
 
@@ -122,8 +121,6 @@ void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro 
 
 Mesh::Mesh(int vertex) {
 
-	srand(static_cast <unsigned> (time(0)));
-
 	vertexList = new std::vector<vertex_t>();
 	faceList = new std::vector<int>();
 
@@ -172,11 +169,8 @@ Mesh::Mesh(int vertex) {
 		vertex2[1] = v[v3][1];
 		vertex2[2] = v[v3][2];
 
-		//recursiveSubdivide(v[v1], v[v2], v[v3], v1, v2, v3, vertex);
 		subdividirPorCorte(vertex0, vertex1, vertex2, v1, v2, v3, vertex);
 	}
-
-	//planetShape();
 
 	std::string vshader = "vshader.txt";
 	std::string fshader = "fshader.txt";
@@ -197,75 +191,22 @@ void Mesh::normalize(std::array<float, 3> &v) {
 	}
 }
 
-void Mesh::normalize(float v[3]) {
-	float d = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-	assert(d > 0);
-	v[0] /= d; v[1] /= d; v[2] /= d;
-
-	for (int i = 0; i < 3; i++)
-	{
-		v[i] *= radius;
-	}
-}
-
 
 void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3> vertex1, std::array<float, 3> vertex2, int triangleIndex0, int triangleIndex1, int triangleIndex2, long depth) {
-	std::vector<std::array<float, 3>> S1,S2,S3;
-	srand(time(0));
 
+	std::vector<std::array<float, 3>> triangleSide1,triangleSide2,triangleSide3;
 
-	std::array<float, 3> Distance = calculateDistance(vertex0, vertex1, depth);
+	triangleSide1 = createSides(vertex0, vertex1, depth);
 
-	S1.push_back(vertex0);
+	triangleSide2 = createSides(vertex0, vertex2, depth);
 
-
-	for (int i = 1; i <= depth; i++)
-	{
-
-		S1.push_back(moveVertex(vertex0, multiplyVertex(Distance, i)));
-		
-	}
-
-	S1.push_back(vertex1);
-
-
-	Distance = calculateDistance(vertex0, vertex2, depth);
-
-
-	S2.push_back(vertex0);
-
-
-
-	for (int i = 1; i <= depth; i++){
-
-		S2.push_back(moveVertex(vertex0, multiplyVertex(Distance, i)));
-
-
-	}
-
-	S2.push_back(vertex2);
-
-
-	Distance = calculateDistance(vertex1, vertex2, depth);
-
-
-	S3.push_back(vertex1);
-
-
-
-	for (int i = 1; i <= depth; i++) {
-
-		S3.push_back(moveVertex(vertex1, multiplyVertex(Distance, i)));
-
-	}
-
-	S3.push_back(vertex2);
+	triangleSide3 = createSides (vertex1, vertex2, depth);
 
 	std::vector<std::vector<std::array<float, 3>>> rowList;
 
 	std::vector<std::array<float, 3>> firstRow;
 
-	firstRow.push_back(S1[0]);
+	firstRow.push_back(triangleSide1[0]);
 
 	rowList.push_back(firstRow);
 
@@ -274,149 +215,63 @@ void Mesh::subdividirPorCorte(std::array<float, 3> vertex0, std::array<float, 3>
 	{
 		std::vector<std::array<float, 3>> row;
 
-		row.push_back(S1[i]);
-
+		row.push_back(triangleSide1[i]);
 
 		if (i >= 2)
 		{
-			std::array<float, 3> rowDistance = calculateDistance(S1[i], S2[i], i);
+			std::array<float, 3> rowDistance = calculateDistance(triangleSide1[i], triangleSide2[i], i);
 
 			for (int j = 1; j < i; j++)
 			{
-				row.push_back(moveVertex(S1[i], multiplyVertex(rowDistance, j)));
+				row.push_back(moveVertex(triangleSide1[i], multiplyVertex(rowDistance, j)));
 			}
 		}
 
-		row.push_back(S2[i]);
+		row.push_back(triangleSide2[i]);
 
 		rowList.push_back(row);
 	}
 
-	rowList.push_back(S3);
+	rowList.push_back(triangleSide3);
 
 
+	for (int i = 1; i < rowList.size(); i++)
+	{
+		for (int j = 0; j < rowList[i].size() - 1; j++) {
 
-		for (int i = 1; i < rowList.size(); i++)
-		{
-			for (int j = 0; j < rowList[i].size() - 1; j++) {
+			vertex_t vertice0 = createVertex(rowList[i - 1][j]);
 
-				normalize(rowList[i - 1][j]);
+			vertex_t vertice1 = createVertex(rowList[i][j]);
 
-				vertex_t vertice0;
-
-				vertice0.posicion.x = rowList[i - 1][j][0];
-				vertice0.posicion.y = rowList[i - 1][j][1];
-				vertice0.posicion.z = rowList[i - 1][j][2];
-				vertice0.posicion.w = 1.0f;
-
-				vertice0.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				vertice0.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				vertice0.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				vertice0.color.w = 1;
-
-				checkSharedVertex(vertice0);
-
-				normalize(rowList[i][j]);
-
-				vertex_t vertice1;
-
-				vertice1.posicion.x = rowList[i][j][0];
-				vertice1.posicion.y = rowList[i][j][1];
-				vertice1.posicion.z = rowList[i][j][2];
-				vertice1.posicion.w = 1.0f;
-
-				vertice1.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				vertice1.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				vertice1.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				vertice1.color.w = 1;
-
-				checkSharedVertex(vertice1);
-
-				normalize(rowList[i][j + 1]);
-
-				vertex_t vertice2;
-
-				vertice2.posicion.x = rowList[i][j + 1][0];
-				vertice2.posicion.y = rowList[i][j + 1][1];
-				vertice2.posicion.z = rowList[i][j + 1][2];
-				vertice2.posicion.w = 1.0f;
-
-				vertice2.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				vertice2.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				vertice2.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				vertice2.color.w = 1;
-
-				checkSharedVertex(vertice2);
+			vertex_t vertice2 = createVertex(rowList[i][j + 1]);
 
 
-				faceList->push_back(vertice0.positionInList);
-				faceList->push_back(vertice1.positionInList);
-				faceList->push_back(vertice2.positionInList);
-
-			}
+			faceList->push_back(vertice0.positionInList);
+			faceList->push_back(vertice1.positionInList);
+			faceList->push_back(vertice2.positionInList);
 
 		}
 
-		for (int i = 1; i < rowList.size()-1; i++)
-		{
-			for (int j = 0; j < rowList[i].size() - 1; j++) {
-				normalize(rowList[i][j]);
+	}
 
-				vertex_t inverseVertice0;
-
-				inverseVertice0.posicion.x = rowList[i][j][0];
-				inverseVertice0.posicion.y = rowList[i][j][1];
-				inverseVertice0.posicion.z = rowList[i][j][2];
-				inverseVertice0.posicion.w = 1;
-
-				inverseVertice0.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				inverseVertice0.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				inverseVertice0.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				inverseVertice0.color.w = 1;
-
-				checkSharedVertex(inverseVertice0);
-
-				normalize(rowList[i + 1][j + 1]);
-
-				vertex_t inverseVertice1;
-
-				inverseVertice1.posicion.x = rowList[i + 1][j + 1][0];
-				inverseVertice1.posicion.y = rowList[i + 1][j + 1][1];
-				inverseVertice1.posicion.z = rowList[i + 1][j + 1][2];
-				inverseVertice1.posicion.w = 1;
-
-				inverseVertice1.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				inverseVertice1.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				inverseVertice1.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				inverseVertice1.color.w = 1;
-
-				checkSharedVertex(inverseVertice1);
-
-				normalize(rowList[i][j + 1]);
-
-				vertex_t inverseVertice2;
-
-				inverseVertice2.posicion.x = rowList[i][j + 1][0];
-				inverseVertice2.posicion.y = rowList[i][j + 1][1];
-				inverseVertice2.posicion.z = rowList[i][j + 1][2];
-				inverseVertice2.posicion.w = 1;
-
-				inverseVertice2.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				inverseVertice2.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				inverseVertice2.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-				inverseVertice2.color.w = 1;
-
-				checkSharedVertex(inverseVertice2);
+	for (int i = 1; i < rowList.size() - 1; i++)
+	{
+		for (int j = 0; j < rowList[i].size() - 1; j++) {
 
 
-				faceList->push_back(inverseVertice0.positionInList);
-				faceList->push_back(inverseVertice1.positionInList);
-				faceList->push_back(inverseVertice2.positionInList);
-			}
+			vertex_t inverseVertice0 = createVertex(rowList[i][j]);
+
+			vertex_t inverseVertice1 = createVertex(rowList[i + 1][j + 1]);
+
+			vertex_t inverseVertice2 = createVertex(rowList[i][j + 1]);
+
+			faceList->push_back(inverseVertice0.positionInList);
+			faceList->push_back(inverseVertice1.positionInList);
+			faceList->push_back(inverseVertice2.positionInList);
+
 		}
 
-	
-
+	}
 
 }
 
@@ -441,8 +296,6 @@ std::array<float, 3> Mesh::moveVertex(std::array<float, 3> vertex, std::array<fl
 	return newVertex;
 }
 
-
-
 std::array<float, 3> Mesh::calculateDistance(std::array<float, 3> vertex0, std::array<float, 3> vertex1, long depth) {
 
 	std::array<float, 3> distance;
@@ -457,117 +310,20 @@ std::array<float, 3> Mesh::calculateDistance(std::array<float, 3> vertex0, std::
 	return distance;
 }
 
+vertex_t Mesh::createVertex(std::array<float, 3> vertex) {
 
+	normalize(vertex);
 
+	vertex_t vertice0;
 
-void Mesh::recursiveSubdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int tin3, long depth) {
+	vertice0.posicion.x = vertex[0];
+	vertice0.posicion.y = vertex[1];
+	vertice0.posicion.z = vertex[2];
+	vertice0.posicion.w = 1.0f;
 
-	float v12[3], v23[3], v31[3];
+	checkSharedVertex(vertice0);
 
-	if (depth == 0) {
-		faceList->push_back(tin1);
-		faceList->push_back(tin2);
-		faceList->push_back(tin3);
-		return;
-	}
-
-	for (int i = 0; i < 3; i++)
-	{
-		v12[i] = (v1[i] + v2[i]) / 2.0;
-		v23[i] = (v2[i] + v3[i]) / 2.0;
-		v31[i] = (v3[i] + v1[i]) / 2.0;
-
-	}
-
-	normalize(v12);
-
-	vertex_t vertex12;
-
-	vertex12.posicion.x = v12[0];
-	vertex12.posicion.y = v12[1];
-	vertex12.posicion.z = v12[2];
-	vertex12.posicion.w = 1;
-
-
-	checkSharedVertex(vertex12);
-
-	normalize(v23);
-
-	vertex_t vertex23;
-
-	vertex23.posicion.x = v23[0];
-	vertex23.posicion.y = v23[1];
-	vertex23.posicion.z = v23[2];
-	vertex23.posicion.w = 1;
-
-
-	checkSharedVertex(vertex23);
-
-	normalize(v31);
-
-	vertex_t vertex31;
-
-	vertex31.posicion.x = v31[0];
-	vertex31.posicion.y = v31[1];
-	vertex31.posicion.z = v31[2];
-	vertex31.posicion.w = 1;
-
-
-	checkSharedVertex(vertex31);
-
-
-	recursiveSubdivide(v1, v12, v31, tin1, vertex12.positionInList, vertex31.positionInList, depth - 1);
-	recursiveSubdivide(v2, v23, v12, tin2, vertex23.positionInList, vertex12.positionInList, depth - 1);
-	recursiveSubdivide(v3, v31, v23, tin3, vertex31.positionInList, vertex23.positionInList, depth - 1);
-	recursiveSubdivide(v12, v23, v31, vertex12.positionInList, vertex23.positionInList, vertex31.positionInList, depth - 1);
-
-}
-
-void Mesh::subdivide(float* v1, float* v2, float* v3, int tin1, int tin2, int tin3, long depth) { //TODO cambiar a cortes por lado
-
-	int newTrianglesPerSide = pow(2, depth);
-	int newVerticesPerSide = newTrianglesPerSide - 1;
-	int totalNewVertices = newVerticesPerSide * 3;
-
-	float** tempVertex = new float* [totalNewVertices]; //Array de vertices a crear con un tamaño variable dependiendo del numero de subdivision
-	for (int i = 0; i < totalNewVertices; i++)
-	{
-		tempVertex[i] = new float[3];
-	}
-
-	float v12TempVertex[3] = { (v2[0] - v1[0]) / newTrianglesPerSide,(v2[1] - v1[1]) / newTrianglesPerSide,(v2[2] - v1[2]) / newTrianglesPerSide }; //dimension del vector de uno de los triangulos
-	float v23TempVertex[3] = { (v3[0] - v2[0]) / newTrianglesPerSide,(v3[1] - v2[1]) / newTrianglesPerSide,(v3[2] - v2[2]) / newTrianglesPerSide }; //dimension del vector de uno de los triangulos
-	float v31TempVertex[3] = { (v1[0] - v3[0]) / newTrianglesPerSide,(v1[1] - v3[1]) / newTrianglesPerSide,(v1[2] - v3[2]) / newTrianglesPerSide }; //dimension del vector de uno de los triangulos
-
-
-	for (int i = 0; i < totalNewVertices; i++) //crea los nuevos vertices en orden 
-	{
-		if (i < newVerticesPerSide)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				tempVertex[i][j] = v1[j] + 1 + i * v12TempVertex[j];
-			}
-		}
-		else if (i >= 2 * newVerticesPerSide)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				tempVertex[i][j] = v1[j] + 1 + i * v23TempVertex[j];
-			}
-
-		}
-		else
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				tempVertex[i][j] = v1[j] + 1 + i * v31TempVertex[j];
-			}
-
-		}
-
-	}
-
+	return vertice0;
 }
 
 void Mesh::setColor(int idxVertex, glm::vec4 color) {
@@ -625,12 +381,6 @@ void Mesh::loadFromFile(std::string fileName) {
 	tex = new Texture(2,texFolder);
 }
 
-void Mesh::giveColor(vertex_t& vertex) {
-	vertex.color.x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex.color.y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex.color.z = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	vertex.color.w = 1;
-}
 
 void Mesh::checkSharedVertex(vertex_t& vertexToCheck) {
 
@@ -658,44 +408,26 @@ void Mesh::checkSharedVertex(vertex_t& vertexToCheck) {
 
 }
 
-void Mesh::planetShape() {	
 
-	for (int i = 0; i < vertexList->size(); i++)
+std::vector<std::array<float, 3>> Mesh::createSides(std::array<float, 3> vertex0, std::array<float, 3> vertex1, long depth) {
+
+	std::vector<std::array<float, 3>> triangleSide;
+
+	std::array<float, 3> Distance = calculateDistance(vertex0, vertex1, depth);
+
+	triangleSide.push_back(vertex0);
+
+
+	for (int i = 1; i <= depth; i++)
 	{
-		float HI = 1.1;
-		float LO = 0.95;
-		float randomHeight = LO + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI - LO)));
 
-		float randomTest = rand() % 3;
+		triangleSide.push_back(moveVertex(vertex0, multiplyVertex(Distance, i)));
 
-		//if (randomTest==2)
-		//{
-		//	(*vertexList)[i].posicion.x *= randomHeight;
-		//	(*vertexList)[i].posicion.y *= randomHeight;
-		//	(*vertexList)[i].posicion.z *= randomHeight;
-		//}
-
-		float length = sqrt((*vertexList)[i].posicion.x * (*vertexList)[i].posicion.x
-			+ (*vertexList)[i].posicion.y * (*vertexList)[i].posicion.y
-			+ (*vertexList)[i].posicion.z * (*vertexList)[i].posicion.z);
-
-
-		if (length >= radius-0.02 && length <= radius+0.02)
-		{
-			setColor(i, glm::vec4(0,0.5,0,0));
-		}
-		else if(length < radius)
-		{
-			setColor(i, glm::vec4(0, 0, 1, 0));
-		}
-		else if (length > radius)
-		{
-			setColor(i, glm::vec4(0.61, 0.61, 0.61, 0));
-		}
-
-
-		
 	}
+
+	triangleSide.push_back(vertex1);
+
+	return triangleSide;
 }
 
 Mesh::~Mesh() {

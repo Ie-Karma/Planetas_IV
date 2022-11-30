@@ -70,7 +70,7 @@ int main(int argc, char** argv)
 
 
 
-	Object* icosahedron = new Icosahedron(20);
+	Object* icosahedron = new Icosahedron(13);
 	icosahedron->position.z -= 2;
 	render->setupObject(icosahedron);
 	scene->addObject(icosahedron);
