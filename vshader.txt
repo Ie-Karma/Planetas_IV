@@ -40,8 +40,8 @@ void main() {
 			vec4 modiefiedVertex = vpos;
 
 			float OldRange = (1 - 0);  
-			float NewRange = (1.1 - 0.9);  
-			float NewValue = (((test.x - 0) * NewRange) / OldRange) + 0.9;
+			float NewRange = (1.03 - 0.97);  
+			float NewValue = (((test.x - 0) * NewRange) / OldRange) + 0.98;
 			
 			modiefiedVertex.x *= NewValue;
 			modiefiedVertex.y *= NewValue;
