@@ -92,7 +92,14 @@ int main(int argc, char** argv)
 			render->drawScene(scene);
 			glfwSwapBuffers(window);
 			glfwPollEvents();
+
+			//close window
+			if (InputManager::keys['C'])
+			{
+				glfwSetWindowShouldClose(window, true);
+			}
 		}
+
 	}
 
 	//delete icosahedron;
