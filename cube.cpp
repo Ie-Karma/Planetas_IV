@@ -8,7 +8,7 @@ void Cube::step()
 {
 
 
-	if(InputManager::keys['A'])
+	/*if(InputManager::keys['A'])
 	{
                 rotation.y-=0.01f;
 	}	
@@ -27,7 +27,7 @@ void Cube::step()
 	if(InputManager::keys['S'])
 	{
                 rotation.x+=0.01f;
-	}
+	}*/
 
 
 

@@ -1,6 +1,7 @@
 #include "camera.h"
 #include "inputManager.h"
 #include <iostream>
+#include <time.h>
 
 
 
@@ -27,6 +28,7 @@ Camera::Camera(glm::vec3 pos, glm::vec3 lookAt, cameraType_e type)
         break;
     };
 
+
 }
 
 void Camera::computeMatrix() {
@@ -52,27 +54,61 @@ glm::mat4 Camera::getProjectionMatrix() {
 void Camera::step()
 {
 
+
+
+
+ //   glfwGetCursorPos(window,&xpos, &ypos);
+ //   glfwGetWindowSize(window,&screenx, &screeny);
+ //   glfwSetCursorPos(window, 0, 0);
+
+ //   horizontalAngle = mouseSpeed * xpos;
+ //   verticalAngle = mouseSpeed * ypos;
+
+ //   degreesx = (degreesx + horizontalAngle);
+ //   degreesy = (degreesy + verticalAngle);
+
+ //   float lookAtz1, lookAtz2;
+
+ //   lookAtz1 = sin(degreesx) + position.z;
+ //   lookAtz2 = cos(degreesy) + position.z;
+
+ //   lookAt.x = cos(degreesx) + position.x;
+ //   
+ //   lookAt.z = lookAtz1 + lookAtz2;
+ //   
+ //   lookAt.y = sin(degreesy) + position.y;
+
+	//std::cout << "vertical angle: " << degreesx << std::endl;
+	//std::cout << "horizontal angle: " << degreesy << std::endl;
+
+
+
+    if (InputManager::keys['L'])
+    {
+        speed = 0.001f;
+    }
+
     if (InputManager::keys['T'])
     {
-        //        position.z-=0.05f;
-        //        lookAt.z-=0.05f;
+        //        position.z-=speed;
+        //        lookAt.z-=speed;
 
-        position.z += 0.05f * sin(degreesx);
-        position.x += 0.05f * cos(degreesx);
-        lookAt.z += 0.05f * sin(degreesx);
-        lookAt.x += 0.05f * cos(degreesx);
+        position.z += speed * sin(degreesx);
+        position.x += speed * cos(degreesx);
+        lookAt.z += speed * sin(degreesx);
+        lookAt.x += speed * cos(degreesx);
 
     }
 
     if (InputManager::keys['F'])
     {
-        //        position.x-=0.05f;
-        //        lookAt.x-=0.05f;
+        //        position.x-=speed;
+        //        lookAt.x-=speed;
 
-        position.z -= 0.05f * cos(degreesx);
-        position.x += 0.05f * sin(degreesx);
-        lookAt.z -= 0.05f * cos(degreesx);
-        lookAt.x += 0.05f * sin(degreesx);
+        position.z -= speed * cos(degreesx);
+        position.x += speed * sin(degreesx);
+        lookAt.z -= speed * cos(degreesx);
+        lookAt.x += speed * sin(degreesx);
 
 
     }
@@ -80,35 +116,35 @@ void Camera::step()
 
     if (InputManager::keys['G'])
     {
-        //        position.z+=0.05f;
-        //        lookAt.z+=0.05f;
+        //        position.z+=speed;
+        //        lookAt.z+=speed;
 
-        position.z -= 0.05f * sin(degreesx);
-        position.x -= 0.05f * cos(degreesx);
-        lookAt.z -= 0.05f * sin(degreesx);
-        lookAt.x -= 0.05f * cos(degreesx);
+        position.z -= speed * sin(degreesx);
+        position.x -= speed * cos(degreesx);
+        lookAt.z -= speed * sin(degreesx);
+        lookAt.x -= speed * cos(degreesx);
     }
 
     if (InputManager::keys['H'])
     {
-        //        position.x+=0.05f;
-        //        lookAt.x+=0.05f;
+        //        position.x+=speed;
+        //        lookAt.x+=speed;
 
-        position.z += 0.05f * cos(degreesx);
-        position.x -= 0.05f * sin(degreesx);
-        lookAt.z += 0.05f * cos(degreesx);
-        lookAt.x -= 0.05f * sin(degreesx);
+        position.z += speed * cos(degreesx);
+        position.x -= speed * sin(degreesx);
+        lookAt.z += speed * cos(degreesx);
+        lookAt.x -= speed * sin(degreesx);
     }
 
     if (InputManager::keys['Y']) {
-        degreesx = (degreesx + 0.05f);
+        degreesx = (degreesx + speed);
 
 
         lookAt.x = cos(degreesx) + position.x;
         lookAt.z = sin(degreesx) + position.z;
     }
     if (InputManager::keys['R']) {
-        degreesx = (degreesx - 0.05f);
+        degreesx = (degreesx - speed);
 
 
         lookAt.x = cos(degreesx) + position.x;

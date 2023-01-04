@@ -18,7 +18,7 @@ public:
 	std::map<int,Object*> *addedObjList=nullptr;
 	
 	Scene();
-	void setCamera(Camera* cam);
+	void setCamera(Camera* cam, GLFWwindow* window);
 	Camera* getCamera();
 	void addObject(Object* obj);
 	void deleteObject(Object* obj);

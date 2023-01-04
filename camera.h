@@ -15,6 +15,20 @@ private:
 	double degreesx;
 	double degreesy;
 	cameraType_e type;
+
+	float horizontalAngle = 0;
+	// vertical angle : 0, look at the horizon
+	float verticalAngle = 0.0f;
+	// Initial Field of View
+	float initialFoV = 45.0f;
+
+	float mouseSpeed = 0.005f;
+
+	double xpos, ypos;
+	int screenx, screeny;
+	float speed = 0.05f;
+
+
 public:
 
 	Camera(glm::vec3 pos, glm::vec3 lookAt, cameraType_e type);
@@ -23,5 +37,7 @@ public:
 	glm::vec3 getPosition();
 	glm::mat4 getMatrix();
 	glm::mat4 getProjectionMatrix();
+
+	GLFWwindow* window;
 
 };

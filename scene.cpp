@@ -8,9 +8,10 @@ Scene::Scene(){
         sceneGrid=new SpatialHashing(objList, 8,8 ,-1.0f ,-1.0f , 2.0f, 2.0f);
 }
 
-void Scene::setCamera(Camera* cam){
+void Scene::setCamera(Camera* cam, GLFWwindow* window){
 
 	this->cam=cam;
+	cam->window = window;
 }
 
 Camera* Scene::getCamera(){

@@ -4,10 +4,10 @@
 
 Render::Render(){
 	glEnable(GL_DEPTH_TEST);
+	glPatchParameteri(GL_PATCH_VERTICES, 3);
 
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_FRONT);
 	
 }
 
@@ -65,6 +65,9 @@ void Render::drawObject(Object* obj){
 
 void Render::drawObjectGL4(Object* obj){
 
+	if (obj->mesh->tex->textType == 2) {
+		glDepthFunc(GL_EQUAL);
+	}
 
 	obj->computeMatrix();
 	
@@ -97,11 +100,20 @@ void Render::drawObjectGL4(Object* obj){
 	glUniformMatrix4fv(0,1,GL_FALSE,&(proj*view*obj->getMatrix())[0][0]);	
 	glUniformMatrix4fv(1,1,GL_FALSE,&(obj->getMatrix())[0][0]);	
 	glUniform4fv(2,1,&lightPos[0]);
-	glUniform1i(7, obj->mesh->tex->textType);
 	glUniform1i(3, textureUnit);
-	glUniform1i(8, textureUnit);
+	glUniform1i(4, obj->mesh->tex->textType);
 
-	glDrawElements(GL_TRIANGLES, obj->mesh->faceList->size(), GL_UNSIGNED_INT,nullptr);
+
+	//Pintar lineas
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDisable(GL_CULL_FACE);
+
+	glDrawElements(GL_PATCHES, obj->mesh->faceList->size(), GL_UNSIGNED_INT,nullptr);
+
+	if (obj->mesh->tex->textType == 2) {
+		
+		glDepthFunc(GL_LESS);
+	}
 }
 
 

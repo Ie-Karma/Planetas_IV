@@ -201,6 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="fshader.txt" />
+    <Text Include="tesControlShader.txt" />
+    <Text Include="tesEvaluationShader.txt" />
     <Text Include="vshader.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

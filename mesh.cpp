@@ -174,10 +174,15 @@ Mesh::Mesh(int vertex) {
 
 	std::string vshader = "vshader.txt";
 	std::string fshader = "fshader.txt";
+	std::string tesControlShader = "tesControlShader.txt";
+	std::string tesEvaluationShader = "tesEvaluationShader.txt";
 
-	shader = new GLShader(vshader, fshader);
+	shader = new GLShader(vshader, fshader, tesControlShader, tesEvaluationShader);
+	
 	tex = new Texture(0, "terrain");
 
+	std::cout << "Caras: " << faceList->size() / 3 << std::endl;
+	std::cout << "Vertices: " << vertexList->size() << std::endl;
 }
 
 void Mesh::normalize(std::array<float, 3> &v) {

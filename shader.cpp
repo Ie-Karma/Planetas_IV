@@ -6,7 +6,19 @@ GLShader::	GLShader(std::string vshader, std::string fshader){
 
 	this->vshader=vshader;
 	this->fshader=fshader;
+	this->tesControlShader = "";
+	this->tesEvalShader = "";
 	
+	compileShaders();
+}
+
+GLShader::GLShader(std::string vshader, std::string fshader, std::string tesControlShader, std::string tesEvalShader) {
+
+	this->vshader = vshader;
+	this->fshader = fshader;
+	this->tesControlShader = tesControlShader;
+	this->tesEvalShader = tesEvalShader;
+
 	compileShaders();
 }
 
@@ -75,6 +87,29 @@ void GLShader::compileShaders(){
 	glCompileShader(fragmentShaderID );
 	
 	checkCompileError(fragmentShaderID);
+	
+	if (this->tesControlShader != "" && this->tesEvalShader != "")
+	{
+		std::string tesControlShaderCode = readFile(this->tesControlShader);
+		std::string tesEvalShaderCode = readFile(this->tesEvalShader);
+		const char* tesc = tesControlShaderCode.c_str();
+		const char* tese = tesEvalShaderCode.c_str();
+		
+		int tesControlShaderID = glCreateShader(GL_TESS_CONTROL_SHADER);
+		glShaderSource(tesControlShaderID, 1, &tesc, nullptr);
+		glCompileShader(tesControlShaderID);
+		
+		checkCompileError(tesControlShaderID);
+		
+		int tesEvalShaderID = glCreateShader(GL_TESS_EVALUATION_SHADER);
+		glShaderSource(tesEvalShaderID, 1, &tese, nullptr);
+		glCompileShader(tesEvalShaderID);
+		
+		checkCompileError(tesEvalShaderID);
+		
+		glAttachShader(this->programID, tesControlShaderID);
+		glAttachShader(this->programID, tesEvalShaderID);
+	}
 	
 	glAttachShader(programID, vertexShaderID );
 	glAttachShader(programID, fragmentShaderID );

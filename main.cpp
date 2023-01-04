@@ -41,6 +41,8 @@ bool renderfps(double framerate, GLFWwindow* window)
 }
 
 
+
+
 int main(int argc, char** argv)
 {
 
@@ -53,6 +55,8 @@ int main(int argc, char** argv)
 	glfwMakeContextCurrent(window);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	
 
 	int glewState = glewInit();
 
@@ -62,32 +66,22 @@ int main(int argc, char** argv)
 	InputManager::init(window);
 
 
-
 	Render* render = new Render();
 	Scene* scene = new Scene();
 	System::scene = scene;
-	scene->setCamera(new Camera(glm::vec3(0, 0, 0.25), glm::vec3(0, 0, 0), perspective));
+	scene->setCamera(new Camera(glm::vec3(0, 0, 0.25), glm::vec3(0, 0, 0), perspective),window);
 
 
 
-	Object* icosahedron = new Icosahedron(50);
+
+	Object* icosahedron = new Icosahedron(0);
 	icosahedron->position.z -= 2;
 	render->setupObject(icosahedron);
 	scene->addObject(icosahedron);
 
-	Object* cube = new Cube("cube.trg");
-	cube->scale *= 20;
-	render->setupObject(cube);
-	scene->addObject(cube);
-
-	//Object* cube2 = new Cube("cube2.trg");
-	//cube2->position += 1;
-	//render->setupObject(cube2);
-	//scene->addObject(cube2);
-
-
-
-
+	//Object* cube = new Cube("cube.trg");
+	//render->setupObject(cube);
+	//scene->addObject(cube);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -98,6 +92,12 @@ int main(int argc, char** argv)
 			render->drawScene(scene);
 			glfwSwapBuffers(window);
 			glfwPollEvents();
+
+			//close window
+			if (InputManager::keys['C'])
+			{				
+				glfwSetWindowShouldClose(window, true);
+			}
 		}
 	}
 
@@ -106,4 +106,6 @@ int main(int argc, char** argv)
 	return 0;
 
 }
+
+
 

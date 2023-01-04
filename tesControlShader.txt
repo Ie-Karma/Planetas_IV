@@ -1,0 +1,44 @@
+#version 460 core
+
+layout (vertices = 3) out;
+
+in vec4 fcolor[];
+in vec4 fpos[];
+in vec4 fnorm[];
+flat in int fTextType[];
+in vec4 fcubeTexCoord[];
+
+patch out vec4 tescontrol_color;
+patch out vec4 tescontrol_pos;
+patch out vec4 tescontrol_norm;
+patch out int tescontrol_TextType;
+out vec4 tescontrol_cubeTexCoord[];
+
+
+
+
+void main(){
+
+	//TODO gestionar valores segun la distancia de la camara
+
+	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
+	
+	tescontrol_color = fcolor[gl_InvocationID];
+	tescontrol_pos = fpos[gl_InvocationID];
+	tescontrol_norm = fnorm[gl_InvocationID];
+	tescontrol_TextType = fTextType[gl_InvocationID];
+	tescontrol_cubeTexCoord[gl_InvocationID] = fcubeTexCoord[gl_InvocationID];
+	
+	if (gl_InvocationID == 0) {
+	
+		gl_TessLevelOuter[0] = 2.0;
+		gl_TessLevelOuter[1] = 2.0;
+		gl_TessLevelOuter[2] = 2.0;
+		
+		gl_TessLevelInner[0] = 2.0;
+	}
+
+
+    
+}
+
