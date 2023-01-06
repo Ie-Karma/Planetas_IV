@@ -55,16 +55,12 @@ void main() {
 
     vec4 finalPoint = center + testVector * newRadius;
    
-    gl_Position = finalPoint;
-    
-  vec4 wtf = finalPoint / finalPoint.w;
-
-    
+    gl_Position = finalPoint;    
 	
 	fcolor = tescontrol_color;
-	fpos = wtf;
+	fpos = tescontrol_pos[gl_PrimitiveID];
 	fnorm = tescontrol_norm[gl_PrimitiveID];
 	fTextType = tescontrol_TextType;
-	fcubeTexCoord = wtf;
+	fcubeTexCoord = texCoord;
 
 	}
