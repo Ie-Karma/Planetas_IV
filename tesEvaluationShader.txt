@@ -3,11 +3,13 @@
 layout(location=0) uniform mat4 MVP;
 layout(location=3) uniform samplerCube cubeMap;
 
+layout (location=6) uniform float radius;
+
 layout (triangles, equal_spacing, ccw) in;
 
 patch in vec4 tescontrol_color;
-patch in vec4 tescontrol_pos;
-patch in vec4 tescontrol_norm;
+in vec4 tescontrol_pos[];
+in vec4 tescontrol_norm[];
 patch in int tescontrol_TextType;
 in vec4 tescontrol_cubeTexCoord[];
 
@@ -18,31 +20,51 @@ out flat int fTextType;
 out vec4 fcubeTexCoord;
 
 
-void main() {
+void main() {    
 
    // barycentric coordinates
     float u = gl_TessCoord.x;
     float v = gl_TessCoord.y;
     float w = gl_TessCoord.z;
+
     // barycentric interpolation
     vec4 texCoord = u * tescontrol_cubeTexCoord[0] + v * tescontrol_cubeTexCoord[1] + w * tescontrol_cubeTexCoord[2];
 
     vec4 pos0 = gl_in[0].gl_Position;
     vec4 pos1 = gl_in[1].gl_Position;
     vec4 pos2 = gl_in[2].gl_Position;
-    // barycentric interpolation
-    vec4 pos = u * pos0 + v * pos1 + w * pos2;
+    
+    // barycentric interpolation    
+    vec4 pos = u * pos0 + v * pos1 + w * pos2;    
+    
 
-    gl_Position = pos;
+    vec4 center = MVP * vec4(0,0,0,1);
+    
+    vec4 testVector = normalize(pos - center); 
+    
+        vec4 test = texture(cubeMap,normalize(pos.xyz));
+
+
+			float OldRange = (1 - 0);  
+			float NewRange = (1.1 - 0.9);  
+			float NewValue = (((test.x - 0) * NewRange) / OldRange) + 0.7;
+			
+			float newRadius = NewValue * radius;
 
     
 
+    vec4 finalPoint = center + testVector * newRadius;
+   
+    gl_Position = finalPoint;
+    
+  vec4 wtf = finalPoint / finalPoint.w;
 
+    
 	
 	fcolor = tescontrol_color;
-	fpos = tescontrol_pos;
-	fnorm = tescontrol_norm;
+	fpos = wtf;
+	fnorm = tescontrol_norm[gl_PrimitiveID];
 	fTextType = tescontrol_TextType;
-	fcubeTexCoord = texCoord;;
+	fcubeTexCoord = wtf;
 
 	}

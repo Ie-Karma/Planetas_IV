@@ -21,7 +21,7 @@ void main() {
 
 	if(fTextType==0){ //Cubemap sphere
 
-		textureColor = texture(cubeMap,normalize(fcubeTexCoord.xyz));
+		textureColor = texture(cubeMap,fcubeTexCoord.xyz);
 		gli_FragColor = textureColor;
 
 	} else if(fTextType==1){

@@ -90,9 +90,9 @@ void Render::drawObjectGL4(Object* obj){
 	unsigned int vnorm=2;
 	glEnableVertexAttribArray(vnorm);
 	glVertexAttribPointer(vnorm,4,GL_FLOAT,GL_FALSE,sizeof(vertex_t),(void*)offsetof(vertex_t,normal));
-
 	
 	glm::vec4 lightPos(0.0f,0.0f,3.0f,1.0f);
+	glm::vec4 camPos(cam->getPosition(), 1.0f);
 
 	int textureUnit = 0;
 	obj->mesh->tex->bind(textureUnit);
@@ -102,11 +102,13 @@ void Render::drawObjectGL4(Object* obj){
 	glUniform4fv(2,1,&lightPos[0]);
 	glUniform1i(3, textureUnit);
 	glUniform1i(4, obj->mesh->tex->textType);
+	glUniform4fv(5, 1, &camPos[0]);
+	glUniform1f(6, obj->mesh->radius);	
 
 
 	//Pintar lineas
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glDisable(GL_CULL_FACE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glDisable(GL_CULL_FACE);
 
 	glDrawElements(GL_PATCHES, obj->mesh->faceList->size(), GL_UNSIGNED_INT,nullptr);
 
@@ -143,6 +145,12 @@ void Render::drawScene(Scene* scene)
 		drawObjectGL4(it->second);
 	}
 
+}
+
+void Render::setCamera(Camera* cam, GLFWwindow* window) {
+
+	this->cam = cam;
+	cam->window = window;
 }
 
 

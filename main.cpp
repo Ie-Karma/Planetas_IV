@@ -70,7 +70,7 @@ int main(int argc, char** argv)
 	Scene* scene = new Scene();
 	System::scene = scene;
 	scene->setCamera(new Camera(glm::vec3(0, 0, 0.25), glm::vec3(0, 0, 0), perspective),window);
-
+	render->setCamera(scene->getCamera(), window);
 
 
 

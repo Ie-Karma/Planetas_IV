@@ -3,14 +3,16 @@
 
 layout(location=0) uniform mat4 MVP;
 layout(location=1) uniform mat4 M;
-layout(location=4) uniform int textType;
 layout(location=3) uniform samplerCube cubeMap;
+layout(location=4) uniform int textType;
+
 
 
 
 layout(location=0)in vec4 vpos;
 layout(location=1)in vec4 vcolor;
 layout(location=2)in vec4 vnorm;
+
 
 
 

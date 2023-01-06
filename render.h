@@ -14,7 +14,8 @@ typedef struct bufferObject_t{
 
 class Render{
 
-private:
+private: 
+	Camera* cam = nullptr;
 	glm::mat4 view=glm::mat4(1.0f);
 	glm::mat4 proj=glm::mat4(1.0f);
 	std::map<int, bufferObject_t> boList;
@@ -26,5 +27,6 @@ public:
 	void drawScene(Scene* scene);
 	void setupObject(Object* obj);
 	void drawObjectGL4(Object* obj);
+	void setCamera(Camera* cam, GLFWwindow* window);
 };
 

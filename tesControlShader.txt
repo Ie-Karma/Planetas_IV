@@ -1,5 +1,8 @@
 #version 460 core
 
+layout (location=5) uniform vec4 camPos;
+
+
 layout (vertices = 3) out;
 
 in vec4 fcolor[];
@@ -9,12 +12,15 @@ flat in int fTextType[];
 in vec4 fcubeTexCoord[];
 
 patch out vec4 tescontrol_color;
-patch out vec4 tescontrol_pos;
-patch out vec4 tescontrol_norm;
+out vec4 tescontrol_pos[];
+out vec4 tescontrol_norm[];
 patch out int tescontrol_TextType;
 out vec4 tescontrol_cubeTexCoord[];
 
-
+const int MIN_TES = 1;
+const int MAX_TES = 2;
+const float MIN_DIST = 0.0;
+const float MAX_DIST = 4;
 
 
 void main(){
@@ -24,19 +30,48 @@ void main(){
 	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 	
 	tescontrol_color = fcolor[gl_InvocationID];
-	tescontrol_pos = fpos[gl_InvocationID];
-	tescontrol_norm = fnorm[gl_InvocationID];
+	tescontrol_pos[gl_InvocationID] = fpos[gl_InvocationID];
+	tescontrol_norm[gl_InvocationID] = fnorm[gl_InvocationID];
 	tescontrol_TextType = fTextType[gl_InvocationID];
 	tescontrol_cubeTexCoord[gl_InvocationID] = fcubeTexCoord[gl_InvocationID];
 	
-	if (gl_InvocationID == 0) {
-	
-		gl_TessLevelOuter[0] = 2.0;
-		gl_TessLevelOuter[1] = 2.0;
-		gl_TessLevelOuter[2] = 2.0;
+if (gl_InvocationID == 0)
+    {
+        vec4 center0 = fpos[0] + (fpos[2] - fpos[0]) / 2.0; // left side
+        vec4 center1 = fpos[1] + (fpos[0] - fpos[1]) / 2.0; // bot side
+        vec4 center2 = fpos[2] + (fpos[1] - fpos[2]) / 2.0; // right side
+
+        
+        float dist0 = length(camPos - center0);
+        float dist1 = length(camPos - center1);
+        float dist2 = length(camPos - center2);
+
+
+        if (dist0 >= 0 && dist0 <= 2)
+		{
+			
+        gl_TessLevelOuter[0] = 30; // left for quads
+        gl_TessLevelOuter[1] = 30; // bot for quads
+        gl_TessLevelOuter[2] = 30; // right for quads
+        
+        gl_TessLevelInner[0] = 30; // top bot for quads*
+		}else if (dist0 > 2 && dist1 <= 4){
+        
+        gl_TessLevelOuter[0] = 10; // left for quads
+		gl_TessLevelOuter[1] = 10; // bot for quads
+		gl_TessLevelOuter[2] = 10; // right for quads
 		
-		gl_TessLevelInner[0] = 2.0;
-	}
+		gl_TessLevelInner[0] = 10; // top bot for quads
+        } else {
+        gl_TessLevelOuter[0] = 1; // left for quads
+        gl_TessLevelOuter[1] = 1; // bot for quads
+        gl_TessLevelOuter[2] = 1; // right for quads
+        
+        gl_TessLevelInner[0] = 1; // top bot for quads
+        }
+
+
+    }
 
 
     
