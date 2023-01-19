@@ -24,17 +24,18 @@ out vec4 fcubeTexCoord;
 
 void main() {
 	gl_Position=MVP*vpos;
+	
 	fpos=M*vpos;
 
 	fnorm=normalize(inverse(transpose(M))*vnorm);
 	
 	fcolor = vcolor;
 
-	fTextType = textType;
+	fTextType = textType; 
 
 	fcubeTexCoord = vpos;
 
-		if(textType == 0){
+		if(textType == 5){
 			vec4 test = texture(cubeMap,normalize(fpos.xyz));
 
 			vec4 modiefiedVertex = vpos;

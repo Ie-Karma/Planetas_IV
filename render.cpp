@@ -110,7 +110,7 @@ void Render::drawObjectGL4(Object* obj){
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	//glDisable(GL_CULL_FACE);
 
-	glDrawElements(GL_PATCHES, obj->mesh->faceList->size(), GL_UNSIGNED_INT,nullptr);
+	glDrawElements(GL_TRIANGLES, obj->mesh->faceList->size(), GL_UNSIGNED_INT,nullptr);
 
 	if (obj->mesh->tex->textType == 2) {
 		
