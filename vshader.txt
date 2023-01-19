@@ -25,5 +25,11 @@ void main() {
 	fTextType = textType; 
 	fcubeTexCoord = vpos;
 
+	if(textType == 2){
+	
+		gl_Position = vec4(fpos.x, fpos.y, fpos.w, fpos.w);
+
+		fcubeTexCoord = vpos;
+	}
 
 }

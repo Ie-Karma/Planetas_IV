@@ -6,8 +6,8 @@ Render::Render(){
 	glEnable(GL_DEPTH_TEST);
 	glPatchParameteri(GL_PATCH_VERTICES, 3);
 
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_FRONT);
 	
 }
 
@@ -110,10 +110,15 @@ void Render::drawObjectGL4(Object* obj){
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	//glDisable(GL_CULL_FACE);
 
-	glDrawElements(GL_PATCHES, obj->mesh->faceList->size(), GL_UNSIGNED_INT,nullptr);
+
+	if (obj->mesh->tex->textType == 0) {
+		glDrawElements(GL_PATCHES, obj->mesh->faceList->size(), GL_UNSIGNED_INT, nullptr);
+
+	}
 
 	if (obj->mesh->tex->textType == 2) {
-		
+		glDrawElements(GL_TRIANGLES, obj->mesh->faceList->size(), GL_UNSIGNED_INT, nullptr);
+
 		glDepthFunc(GL_LESS);
 	}
 }
