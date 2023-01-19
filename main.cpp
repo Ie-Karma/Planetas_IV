@@ -79,9 +79,9 @@ int main(int argc, char** argv)
 	render->setupObject(icosahedron);
 	scene->addObject(icosahedron);
 
-	//Object* cube = new Cube("cube.trg");
-	//render->setupObject(cube);
-	//scene->addObject(cube);
+	Object* cube = new Cube("cube.trg");
+	render->setupObject(cube);
+	scene->addObject(cube);
 
 	while (!glfwWindowShouldClose(window))
 	{

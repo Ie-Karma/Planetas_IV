@@ -201,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="fshader.txt" />
+    <Text Include="geometryShader.txt" />
     <Text Include="tesControlShader.txt" />
     <Text Include="tesEvaluationShader.txt" />
     <Text Include="vshader.txt" />

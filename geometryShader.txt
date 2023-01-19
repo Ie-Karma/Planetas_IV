@@ -1,0 +1,44 @@
+#version 460 core
+
+layout(location=0) uniform mat4 MVP;
+layout(location=1) uniform mat4 M;
+
+layout(triangles) in; 
+layout(triangle_strip, max_vertices = 3) out;
+
+in vec4 gcolor[];
+in vec4 gpos[];
+in vec4 gnorm[];
+in flat int gTextType[];
+in vec4 gcubeTexCoord[];
+
+
+out vec4 fcolor;
+out vec4 fpos;
+out vec4 fnorm;
+out flat int fTextType;
+out vec4 fcubeTexCoord;
+
+void main(void){
+
+    for(int i=0; i<3; i++){
+        vec4 pos = gl_in[i].gl_Position;
+        vec4 normal = normalize(pos);   
+
+        pos = normal; 
+        gl_Position = M * MVP * pos; 
+
+        fcolor = gcolor[i];
+        fpos = gpos[i];
+        fnorm = gnorm[i];
+        fTextType = gTextType[i];
+        fcubeTexCoord = gcubeTexCoord[i];
+   
+        EmitVertex();
+    }
+
+   EndPrimitive();
+
+
+   
+}

@@ -6,15 +6,9 @@ layout(location=1) uniform mat4 M;
 layout(location=3) uniform samplerCube cubeMap;
 layout(location=4) uniform int textType;
 
-
-
-
 layout(location=0)in vec4 vpos;
 layout(location=1)in vec4 vcolor;
 layout(location=2)in vec4 vnorm;
-
-
-
 
 out vec4 fcolor;
 out vec4 fpos;
@@ -26,29 +20,10 @@ void main() {
 	gl_Position=MVP*vpos;
 	
 	fpos=M*vpos;
-
-	fnorm=normalize(inverse(transpose(M))*vnorm);
-	
+	fnorm=normalize(inverse(transpose(M))*vnorm);	
 	fcolor = vcolor;
-
 	fTextType = textType; 
-
 	fcubeTexCoord = vpos;
 
-		if(textType == 5){
-			vec4 test = texture(cubeMap,normalize(fpos.xyz));
 
-			vec4 modiefiedVertex = vpos;
-
-			float OldRange = (1 - 0);  
-			float NewRange = (1.1 - 0.9);  
-			float NewValue = (((test.x - 0) * NewRange) / OldRange) + 0.9;
-			
-			modiefiedVertex.x *= NewValue;
-			modiefiedVertex.y *= NewValue;
-			modiefiedVertex.z *= NewValue;
-
-			
-		gl_Position = MVP * modiefiedVertex;
-	}
 }

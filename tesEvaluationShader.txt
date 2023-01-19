@@ -1,6 +1,7 @@
 #version 460 core
 
 layout(location=0) uniform mat4 MVP;
+layout(location=1) uniform mat4 M;
 layout(location=3) uniform samplerCube cubeMap;
 
 layout (location=6) uniform float radius;
@@ -35,32 +36,31 @@ void main() {
     vec4 pos2 = gl_in[2].gl_Position;
     
     // barycentric interpolation    
-    vec4 pos = u * pos0 + v * pos1 + w * pos2;    
+    vec4 pos = u * pos0 + v * pos1 + w * pos2;
+
+    vec4 localPos = inverse(MVP) * pos;
+
+    vec3 dir = normalize(localPos.xyz);  
     
+    vec4 spherePos = vec4(dir,1.0);
 
-    vec4 center = MVP * vec4(0,0,0,1);
-    
-    vec4 testVector = normalize(pos - center); 
-    
-        vec4 test = texture(cubeMap,normalize(pos.xyz));
+    vec4 test = texture(cubeMap,normalize(spherePos.xyz));
 
 
-			float OldRange = (1 - 0);  
-			float NewRange = (1.1 - 0.9);  
-			float NewValue = (((test.x - 0) * NewRange) / OldRange) + 0.7;
-			
-			float newRadius = NewValue * radius;
+    float OldRange = (1 - 0);
+    float NewRange = (1.1 - 0.9);
+    float NewValue = (((test.x - 0) * NewRange) / OldRange) + 0.9;
 
-    
+    spherePos.x *= NewValue;
+    spherePos.y *= NewValue;
+    spherePos.z *= NewValue;
 
-    vec4 finalPoint = center + testVector * newRadius;
-   
-    gl_Position = finalPoint;    
+    gl_Position = MVP * spherePos;
 	
 	fcolor = tescontrol_color;
-	fpos = tescontrol_pos[gl_PrimitiveID];
+	fpos = spherePos;
 	fnorm = tescontrol_norm[gl_PrimitiveID];
 	fTextType = tescontrol_TextType;
-	fcubeTexCoord = texCoord;
+	fcubeTexCoord = spherePos;
 
 	}

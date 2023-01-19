@@ -6,22 +6,22 @@
 void Icosahedron::step() {
 	if (InputManager::keys['A'])
 	{
-		rotation.y -= 0.01f;
+		rotation.y -= 0.005f;
 	}
 
 	if (InputManager::keys['D'])
 	{
-		rotation.y += 0.01f;
+		rotation.y += 0.005f;
 	}
 
 
 	if (InputManager::keys['W'])
 	{
-		rotation.x -= 0.01f;
+		rotation.x -= 0.005f;
 	}
 
 	if (InputManager::keys['S'])
 	{
-		rotation.x += 0.01f;
+		rotation.x += 0.005f;
 	}
 }

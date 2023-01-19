@@ -177,7 +177,7 @@ Mesh::Mesh(int vertex) {
 	std::string tesControlShader = "tesControlShader.txt";
 	std::string tesEvaluationShader = "tesEvaluationShader.txt";
 
-	shader = new GLShader(vshader, fshader);
+	shader = new GLShader(vshader, fshader, tesControlShader, tesEvaluationShader);
 	
 	tex = new Texture(0, "terrain");
 
