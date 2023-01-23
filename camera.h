@@ -1,6 +1,7 @@
 #pragma once
 #include "common.h"
 
+
 typedef enum cameraType_e {
 	perspective, ortho
 }cameraType_e;
@@ -22,11 +23,11 @@ private:
 	// Initial Field of View
 	float initialFoV = 45.0f;
 
-	float mouseSpeed = 0.005f;
+	float mouseSpeed = 0.1f;
 
 	double xpos, ypos;
 	int screenx, screeny;
-	float speed = 0.05f;
+	float speed = 0.1f;
 
 
 public:

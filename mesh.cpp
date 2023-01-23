@@ -38,8 +38,7 @@ Mesh::Mesh(std::string fileName) {
 
 void Mesh::computeIcosahedronVertices() //Calculo de los vertices del icosaedro de forma matematica desplazando por angulos
 {
-	radius = 1;
-	const float PI = acos(-1);
+	radius = 5;
 	const float H_ANGLE = PI / 180 * 72;    // 72 degree = 360 / 5
 	const float V_ANGLE = atanf(1.0f / 2);  // elevation = 26.565 degree
 
@@ -179,7 +178,7 @@ Mesh::Mesh(int vertex) {
 
 	shader = new GLShader(vshader, fshader, tesControlShader, tesEvaluationShader);
 	
-	tex = new Texture(0, "terrain");
+	tex = new Texture(0, "terrain2");
 
 	std::cout << "Caras: " << faceList->size() / 3 << std::endl;
 	std::cout << "Vertices: " << vertexList->size() << std::endl;

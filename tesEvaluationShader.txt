@@ -21,6 +21,7 @@ out flat int fTextType;
 out vec4 fcubeTexCoord;
 
 
+
 void main() {    
 
    // barycentric coordinates
@@ -42,18 +43,12 @@ void main() {
 
     vec3 dir = normalize(localPos.xyz);  
     
-    vec4 spherePos = vec4(dir,1.0) * radius;
+    vec4 spherePos = vec4(dir,1.0);
+    
+    spherePos * 10;
 
     vec4 test = texture(cubeMap,spherePos.xyz);
 
-
-    float OldRange = (1 - 0);
-    float NewRange = (1.1 - 0.9);
-    float NewValue = (((test.x - 0) * NewRange) / OldRange) + 0.9;
-
-    spherePos.x *= NewValue;
-    spherePos.y *= NewValue;
-    spherePos.z *= NewValue;
 
     gl_Position = MVP * spherePos;
 	
@@ -63,4 +58,8 @@ void main() {
 	fTextType = tescontrol_TextType;
 	fcubeTexCoord = spherePos;
 
+
 	}
+
+
+    

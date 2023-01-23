@@ -11,6 +11,8 @@
 #include <string>
 
 
+#define PI 3.14159265
+
 #define ENEMY_OBJ 		0
 #define BULLET_OBJ 		1
 #define SPACESHIP_OBJ 	2
