@@ -49,6 +49,16 @@ void main() {
 
     vec4 test = texture(cubeMap,spherePos.xyz);
 
+    float maxHeight = 1.1;
+    float minHeight = 0.9;
+
+    float oldRange = (1 - 0);
+    float newRange = (maxHeight - minHeight);
+    float newValue = (((test.x - 0) * newRange) / oldRange) + minHeight;
+
+    spherePos.x *= newValue;
+    spherePos.y *= newValue;
+    spherePos.z *= newValue;
 
     gl_Position = MVP * spherePos;
 	

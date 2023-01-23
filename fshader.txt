@@ -5,26 +5,36 @@ layout(location=2) uniform vec4 lightPos;
 layout(location=3) uniform samplerCube cubeMap;
 layout (location=6) uniform float radius;
 
-
 in vec4 fcolor;
 in vec4 fpos;
 in vec4 fnorm;
 flat in int fTextType;
 in vec4 fcubeTexCoord;
 
-
 out vec4 gli_FragColor;
 
-void main() {	
-
+void main()
+{	
 	vec4 textureColor = vec4(1.0f,0.0f,0.0f,1.0f);
-	
+	float radius = distance(fpos, vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-	if(fTextType==0){ //Cubemap sphere
+	if(fTextType==0)
+	{ //Cubemap sphere
+		//textureColor = texture(cubeMap,fcubeTexCoord.xyz);
+		//gli_FragColor = textureColor;
 
-		textureColor = texture(cubeMap,fcubeTexCoord.xyz);
-		gli_FragColor = textureColor;
-
+		if(0.9 < radius && radius < 1.0)
+		{
+			gli_FragColor = vec4(0.0f,0.0f,1.0f,1.0f);
+		}
+		if(1.0 < radius && radius < 1.05)
+		{
+			gli_FragColor = vec4(0.0f,1.0f,0.0f,1.0f);
+		}
+		if(1.05 < radius && radius < 1.1)
+		{
+			gli_FragColor = vec4(1.0f,1.0f,1.0f,1.0f);
+		}
 	} else if(fTextType==1){
 
 		//textureColor = texture2D(cubeMap, tempCoords);
@@ -50,9 +60,4 @@ void main() {
 	
         gli_FragColor = fcolor*(amb+diffuse+specular);
 	}
-
-
-	
-
-	
 }
