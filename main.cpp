@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 		std::cout << "ERROR iniciando glfw\n";
 
 
-	GLFWwindow* window = glfwCreateWindow(1080, 810, "Prueba 1 GLFW", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(1920, 1080, "Prueba 1 GLFW", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
@@ -74,7 +74,7 @@ int main(int argc, char** argv)
 
 
 
-	Object* icosahedron = new Icosahedron(0);
+	Object* icosahedron = new Icosahedron(10);
 	icosahedron->position.z -= 2;
 	render->setupObject(icosahedron);
 	scene->addObject(icosahedron);

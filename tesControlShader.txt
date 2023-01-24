@@ -1,5 +1,6 @@
 #version 460 core
 
+layout(location=0) uniform mat4 MVP;
 layout (location=5) uniform vec4 camPos;
 
 
@@ -22,6 +23,23 @@ const int MAX_TES = 2;
 const float MIN_DIST = 0.0;
 const float MAX_DIST = 4;
 
+int dist(float distance){
+
+    if (distance >= 0 && distance < 4){
+        return 64;
+    }else if (distance >= 4 && distance < 6){
+		return 10;
+    }else if (distance >= 6 && distance < 8){
+        return 5;
+        } else if (distance >= 8 && distance < 10){
+        return 2;
+		} else {
+        return 1;
+        }
+    
+}
+
+
 
 void main(){
 
@@ -37,38 +55,28 @@ void main(){
 	
 if (gl_InvocationID == 0)
     {
-        vec4 center0 = fpos[0] + (fpos[2] - fpos[0]) / 2.0; // left side
-        vec4 center1 = fpos[1] + (fpos[0] - fpos[1]) / 2.0; // bot side
-        vec4 center2 = fpos[2] + (fpos[1] - fpos[2]) / 2.0; // right side
 
+        vec4 localPos0 = inverse(MVP) * gl_in[0].gl_Position;
+        vec4 localPos1 = inverse(MVP) * gl_in[1].gl_Position;
+        vec4 localPos2 = inverse(MVP) * gl_in[2].gl_Position;
         
-        float dist0 = length(camPos - center0);
-        float dist1 = length(camPos - center1);
-        float dist2 = length(camPos - center2);
+        vec4 centro = (localPos0 + localPos1 + localPos2) / 3.0;
+
+        vec4 centrofpos = (fpos[0] + fpos[1] + fpos[2]) / 3.0;
+        
+        
+        
+       
 
 
-        if (dist0 >= 0 && dist0 <= 2)
-		{
+
 			
-        gl_TessLevelOuter[0] = 30; // left for quads
-        gl_TessLevelOuter[1] = 30; // bot for quads
-        gl_TessLevelOuter[2] = 30; // right for quads
+        gl_TessLevelOuter[0] = dist(distance(centrofpos, camPos)); 
+        gl_TessLevelOuter[1] = dist(distance(centrofpos, camPos)); 
+        gl_TessLevelOuter[2] = dist(distance(centrofpos, camPos)); 
         
-        gl_TessLevelInner[0] = 30; // top bot for quads*
-		}else if (dist0 > 2 && dist1 <= 4){
-        
-        gl_TessLevelOuter[0] = 10; // left for quads
-		gl_TessLevelOuter[1] = 10; // bot for quads
-		gl_TessLevelOuter[2] = 10; // right for quads
-		
-		gl_TessLevelInner[0] = 10; // top bot for quads
-        } else {
-        gl_TessLevelOuter[0] = 1; // left for quads
-        gl_TessLevelOuter[1] = 1; // bot for quads
-        gl_TessLevelOuter[2] = 1; // right for quads
-        
-        gl_TessLevelInner[0] = 1; // top bot for quads
-        }
+        gl_TessLevelInner[0] = dist(distance(centrofpos, camPos));
+
 
 
     }
@@ -76,4 +84,5 @@ if (gl_InvocationID == 0)
 
     
 }
+
 

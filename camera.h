@@ -13,21 +13,23 @@ private:
 	glm::vec3 lookAt;
 	glm::mat4 viewMatrix;
 	glm::mat4 projMatrix;
-	double degreesx;
-	double degreesy;
+	float yaw;
+	float pitch;
+	float roll;
+	float max_roll;
 	cameraType_e type;
 
 	float horizontalAngle = 0;
 	// vertical angle : 0, look at the horizon
 	float verticalAngle = 0.0f;
 	// Initial Field of View
-	float initialFoV = 45.0f;
+	float initialFoV = 90.0f;
 
 	float mouseSpeed = 0.1f;
 
 	double xpos, ypos;
 	int screenx, screeny;
-	float speed = 0.1f;
+	float speed = 0.05f;
 
 
 public:
