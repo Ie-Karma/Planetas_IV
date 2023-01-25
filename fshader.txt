@@ -20,21 +20,22 @@ void main()
 
 	if(fTextType==0)
 	{ //Cubemap sphere
-    if(0.9 < radius && radius < 1.0)
+
+        if(0.9 < radius && radius < 1.01)
         {
-            gli_FragColor = vec4(0.0f,0.0f,0.5-(1-radius)*5,1.0f);
+            gli_FragColor = vec4(0.0f,0.0f,0.5-(1-radius)*7,1.0f);
         }
-        if(1.0 < radius && radius < 1.03)
+        if(1.01 < radius && radius < 1.025)
         {
-            gli_FragColor = vec4(0.0f,0.5-(radius-1)*5,0.0f,1.0f);
+            gli_FragColor = vec4(0.0f,0.5-(radius-1)*8,0.0f,1.0f);
         }
-        if(1.03 < radius && radius < 1.07)
+        if(1.025 < radius && radius < 1.05)
         {
             gli_FragColor = vec4(0.5-(radius-1)*2,0.5-(radius-1)*6,0.1f,1.0f);
         }
-        if(1.07 < radius)// && radius < 1.1)
+        if(1.05 < radius)// && radius < 1.1)
         {
-            gli_FragColor = vec4(0.95-(radius-1)*2,0.95-(radius-1),1.0f,1.0f);
+            gli_FragColor = vec4(0.9-(radius-1)*2,0.95-(radius-1),1.0f,1.0f);
         }
 
 
