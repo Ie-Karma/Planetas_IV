@@ -65,10 +65,6 @@ void Render::drawObject(Object* obj){
 
 void Render::drawObjectGL4(Object* obj){
 
-	if (obj->mesh->tex->textType == 2) {
-		glDepthFunc(GL_EQUAL);
-	}
-
 	obj->computeMatrix();
 	
 	bufferObject_t bo=boList[obj->id];
@@ -96,6 +92,7 @@ void Render::drawObjectGL4(Object* obj){
 
 	int textureUnit = 0;
 	obj->mesh->tex->bind(textureUnit);
+
 	
 	glUniformMatrix4fv(0,1,GL_FALSE,&(proj*view*obj->getMatrix())[0][0]);	
 	glUniformMatrix4fv(1,1,GL_FALSE,&(obj->getMatrix())[0][0]);	
@@ -118,8 +115,6 @@ void Render::drawObjectGL4(Object* obj){
 
 	if (obj->mesh->tex->textType == 2) {
 		glDrawElements(GL_TRIANGLES, obj->mesh->faceList->size(), GL_UNSIGNED_INT, nullptr);
-
-		glDepthFunc(GL_LESS);
 	}
 }
 

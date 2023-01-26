@@ -82,6 +82,7 @@ int main(int argc, char** argv)
 	Object* cube = new Cube("cube.trg");
 	render->setupObject(cube);
 	scene->addObject(cube);
+	cube->scale *= 50;
 
 	while (!glfwWindowShouldClose(window))
 	{
